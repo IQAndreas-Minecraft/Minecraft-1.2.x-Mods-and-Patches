@@ -10,8 +10,9 @@ else
     
     mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
     
-    if [ $2 == "-r" ]; then
-        
+    #if [ $2 == "-r" ]; then
+    if [ $# -ge 2 ]; then #just check for ANYTHING in parameter 2 as a temporary fix
+            
         echo "WARNING: Problem with the code. Please recompile and reobfuscate manually."
         
         #recompile="$mcpDir/recompile.sh"

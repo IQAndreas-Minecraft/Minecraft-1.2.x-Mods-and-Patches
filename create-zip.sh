@@ -14,7 +14,7 @@ else
     zipName="$zipDir/$projectName-$projectVersion.zip"
     
     mkdir -p $zipDir    #Make sure the target folder exists
-    rm $zipName         #Make sure zip file does not already exist
+    rm -f $zipName      #Make sure zip file does not already exist
     
     installationFile="$projectName/INSTALLATION"
     licenseFile="$projectName/LICENSE"

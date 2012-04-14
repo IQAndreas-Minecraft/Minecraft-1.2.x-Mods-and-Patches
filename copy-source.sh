@@ -17,11 +17,12 @@ else
         argNum=`expr $argNum + 1` #Increment arg counter
         if [ $argNum -gt 1 ] #Ignore first two arguments
         then
+            #Assume all files are in the package `net.minecraft.src.*` (as most of them are)
             srcFile="$mcpDir/src/minecraft/net/minecraft/src/$fileName.java"
             if [ -e $srcFile ]; then
                 targetFile="$targetDir/$fileName.java"
                 cp -r $srcFile $targetFile
-                echo "Copying $targetFile"
+                echo "Copying $fileName.java"
             else
                 echo "ERROR: Could not find $fileName.java."
             fi

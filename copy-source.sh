@@ -1,6 +1,9 @@
 #!/bin/bash
-if [ $# -ge 2 ]
-then
+if [ $# -lt 2 ]; then
+    echo "Command requires two or more parameters: project name, ... files."
+elif [ ! -e $1 ]; then
+    echo "Cannot find project $1."
+else
     #Aliases for clarity
     projectName=$1 #relative
     
@@ -15,12 +18,13 @@ then
         if [ $argNum -gt 1 ] #Ignore first two arguments
         then
             srcFile="$mcpDir/src/minecraft/net/minecraft/src/$fileName.java"
-            targetFile="$targetDir/$fileName.java"
-            cp -r $srcFile $targetFile
-            echo $targetFile
+            if [ -e $srcFile ]; then
+                targetFile="$targetDir/$fileName.java"
+                cp -r $srcFile $targetFile
+                echo "Copying $targetFile"
+            else
+                echo "ERROR: Could not find $fileName.java."
+            fi
         fi
     done
-    
-else
-    echo "Command requires two or more parameters: project name, ... files."
 fi

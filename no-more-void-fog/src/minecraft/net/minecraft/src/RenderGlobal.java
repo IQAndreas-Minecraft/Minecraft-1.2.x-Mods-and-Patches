@@ -1862,7 +1862,14 @@ public class RenderGlobal implements IWorldAccess
         }
         else if (par1Str.equals("depthsuspend"))
         {
-            obj = new EntityAuraFX(worldObj, par2, par4, par6, par8, par10, par12);
+        	if (mc.gameSettings.voidFogSetting != 2)
+        	{
+        		obj = new EntityAuraFX(worldObj, par2, par4, par6, par8, par10, par12);
+        	}
+        	else
+        	{
+        		//Skip void particles if disabled in the settings
+        	}
         }
         else if (par1Str.equals("townaura"))
         {

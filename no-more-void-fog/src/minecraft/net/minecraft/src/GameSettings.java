@@ -26,6 +26,13 @@ public class GameSettings
     {
         "performance.max", "performance.balanced", "performance.powersaver"
     };
+    private static final String VOID_FOGS[] =
+    {
+    	//"options.voidFog.on", "options.voidFog.particlesOnly", "options.voidFog.off"
+    	// Needs translation files :(
+    	"ON", "Particles only", "OFF"
+    };
+    
     public float musicVolume;
     public float soundVolume;
     public float mouseSensitivity;
@@ -95,6 +102,9 @@ public class GameSettings
     /** Determines amount of particles. 0 = All, 1 = Decreased, 2 = Minimal */
     public int particleSetting;
 
+    /** Determines if void fog should be visible. 0 = On, 1 = Particles only, 2 = Off */
+    public int voidFogSetting;
+
     /** Game settings language */
     public String language;
 
@@ -146,6 +156,7 @@ public class GameSettings
         gammaSetting = 0.0F;
         guiScale = 0;
         particleSetting = 0;
+        voidFogSetting = 0;
         language = "en_US";
         mc = par1Minecraft;
         optionsFile = new File(par2File, "options.txt");
@@ -200,6 +211,7 @@ public class GameSettings
         gammaSetting = 0.0F;
         guiScale = 0;
         particleSetting = 0;
+        voidFogSetting = 0;
         language = "en_US";
     }
 
@@ -301,6 +313,11 @@ public class GameSettings
         if (par1EnumOptions == EnumOptions.PARTICLES)
         {
             particleSetting = (particleSetting + par2) % 3;
+        }
+        
+        if (par1EnumOptions == EnumOptions.VOID_FOG)
+        {
+        	voidFogSetting = (voidFogSetting + par2) % 3;
         }
 
         if (par1EnumOptions == EnumOptions.VIEW_BOBBING)
@@ -525,6 +542,11 @@ public class GameSettings
         {
             return (new StringBuilder()).append(s).append(func_48571_a(PARTICLES, particleSetting)).toString();
         }
+        
+        if (par1EnumOptions == EnumOptions.VOID_FOG)
+        {
+            return (new StringBuilder()).append(s).append(func_48571_a(VOID_FOGS, voidFogSetting)).toString();
+        }
 
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT)
         {
@@ -611,6 +633,11 @@ public class GameSettings
                     if (as[0].equals("particles"))
                     {
                         particleSetting = Integer.parseInt(as[1]);
+                    }
+
+                    if (as[0].equals("voidFog"))
+                    {
+                        voidFogSetting = Integer.parseInt(as[1]);
                     }
 
                     if (as[0].equals("bobView"))
@@ -733,6 +760,7 @@ public class GameSettings
             printwriter.println((new StringBuilder()).append("viewDistance:").append(renderDistance).toString());
             printwriter.println((new StringBuilder()).append("guiScale:").append(guiScale).toString());
             printwriter.println((new StringBuilder()).append("particles:").append(particleSetting).toString());
+            printwriter.println((new StringBuilder()).append("voidFog:").append(voidFogSetting).toString());            
             printwriter.println((new StringBuilder()).append("bobView:").append(viewBobbing).toString());
             printwriter.println((new StringBuilder()).append("anaglyph3d:").append(anaglyph).toString());
             printwriter.println((new StringBuilder()).append("advancedOpengl:").append(advancedOpengl).toString());

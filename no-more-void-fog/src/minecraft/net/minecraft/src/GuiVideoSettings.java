@@ -140,7 +140,7 @@ public class GuiVideoSettings extends GuiScreen
         videoOptions = (new EnumOptions[]
                 {
                     EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS,
-                    EnumOptions.PARTICLES
+                    EnumOptions.PARTICLES, EnumOptions.VOID_FOG
                 });
     }
 }

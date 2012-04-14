@@ -1625,8 +1625,9 @@ public class EntityRenderer
         fogColorRed *= f10;
         fogColorGreen *= f10;
         fogColorBlue *= f10;
+        
         double d = (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par1) * world.worldProvider.getVoidFogYFactor();
-
+        
         if (entityliving.isPotionActive(Potion.blindness))
         {
             int j = entityliving.getActivePotionEffect(Potion.blindness).getDuration();
@@ -1797,7 +1798,8 @@ public class EntityRenderer
         {
             float f4 = farPlaneDistance;
 
-            if (mc.theWorld.worldProvider.getWorldHasNoSky() && !flag)
+            boolean voidFogEnabled = mc.gameSettings.voidFogSetting == 0;
+            if (mc.theWorld.worldProvider.getWorldHasNoSky() && !flag && voidFogEnabled)
             {
                 double d = (double)((entityliving.getBrightnessForRender(par2) & 0xf00000) >> 20) / 16D + (entityliving.lastTickPosY + (entityliving.posY - entityliving.lastTickPosY) * (double)par2 + 4D) / 32D;
 

@@ -18,7 +18,9 @@ public enum EnumOptions
     AMBIENT_OCCLUSION("options.ao", false, true),
     GUI_SCALE("options.guiScale", false, false),
     RENDER_CLOUDS("options.renderClouds", false, true),
-    PARTICLES("options.particles", false, false);
+    PARTICLES("options.particles", false, false),
+    //VOID_FOG("options.voidFog", false, false);
+    VOID_FOG("Void fog", false, false);
 
     private final boolean enumFloat;
     private final boolean enumBoolean;

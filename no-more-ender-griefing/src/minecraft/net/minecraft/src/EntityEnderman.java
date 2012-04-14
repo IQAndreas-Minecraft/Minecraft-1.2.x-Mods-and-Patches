@@ -147,23 +147,12 @@ public class EntityEnderman extends EntityMob
         {
             if (getCarried() == 0)
             {
-                if (rand.nextInt(20) == 0)
-                {
-                    int i = MathHelper.floor_double((posX - 2D) + rand.nextDouble() * 4D);
-                    int l = MathHelper.floor_double(posY + rand.nextDouble() * 3D);
-                    int j1 = MathHelper.floor_double((posZ - 2D) + rand.nextDouble() * 4D);
-                    int l1 = worldObj.getBlockId(i, l, j1);
-
-                    if (canCarryBlocks[l1])
-                    {
-                        setCarried(worldObj.getBlockId(i, l, j1));
-                        setCarryingData(worldObj.getBlockMetadata(i, l, j1));
-                        worldObj.setBlockWithNotify(i, l, j1, 0);
-                    }
-                }
+                //Do not try to pick up blocks anymore
             }
             else if (rand.nextInt(2000) == 0)
             {
+            	//The Enderman can still put down any blocks they were carrying when you were last logged in
+            	
                 int j = MathHelper.floor_double((posX - 1.0D) + rand.nextDouble() * 2D);
                 int i1 = MathHelper.floor_double(posY + rand.nextDouble() * 2D);
                 int k1 = MathHelper.floor_double((posZ - 1.0D) + rand.nextDouble() * 2D);
@@ -441,19 +430,6 @@ public class EntityEnderman extends EntityMob
     static
     {
         canCarryBlocks = new boolean[256];
-        canCarryBlocks[Block.grass.blockID] = true;
-        canCarryBlocks[Block.dirt.blockID] = true;
-        canCarryBlocks[Block.sand.blockID] = true;
-        canCarryBlocks[Block.gravel.blockID] = true;
-        canCarryBlocks[Block.plantYellow.blockID] = true;
-        canCarryBlocks[Block.plantRed.blockID] = true;
-        canCarryBlocks[Block.mushroomBrown.blockID] = true;
-        canCarryBlocks[Block.mushroomRed.blockID] = true;
-        canCarryBlocks[Block.tnt.blockID] = true;
-        canCarryBlocks[Block.cactus.blockID] = true;
-        canCarryBlocks[Block.blockClay.blockID] = true;
-        canCarryBlocks[Block.pumpkin.blockID] = true;
-        canCarryBlocks[Block.melon.blockID] = true;
-        canCarryBlocks[Block.mycelium.blockID] = true;
+        // Set no blocks to carryable
     }
 }

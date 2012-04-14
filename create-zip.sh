@@ -30,7 +30,7 @@ else
         cp $installationFile zip-temp
         cp $licenseFile zip-temp
         cp $readmeFile zip-temp
-        zip -r $zipName zip-temp/*
+        zip -rj $zipName zip-temp/*
     rm -r zip-temp
     
     echo "Successfully created zip file $zipName"

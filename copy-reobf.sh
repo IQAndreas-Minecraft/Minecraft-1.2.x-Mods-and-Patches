@@ -9,18 +9,17 @@ else
     projectName=$1 #relative
     
     mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
+    curDir="/media/My_Book/Programming/GIT/Projects/Minecraft-Mods-and-Patches"
     
     #if [ $2 == "-r" ]; then
     if [ $# -ge 2 ]; then #just check for ANYTHING in parameter 2 as a temporary fix
-            
-        echo "WARNING: Problem with the code. Please recompile and reobfuscate manually."
+        echo "Recompiling and reobfuscating source"
+        cd $mcpDir
+        #$mcpDir/recompile.sh
+        #$mcpDir/reobfuscate.sh
         
-        #recompile="$mcpDir/recompile.sh"
-        #reobfuscate="$mcpDir/reobfuscate.sh"
-        
-        #Execute commands
-        #$recompile
-        #$reobfuscate
+        #Switch back to the repository directory
+        cd $curDir
     fi
     
     reobfSrc="$mcpDir/reobf/*"

@@ -15,8 +15,8 @@ else
     if [ $# -ge 2 ]; then #just check for ANYTHING in parameter 2 as a temporary fix
         echo "Recompiling and reobfuscating source"
         cd $mcpDir
-        #$mcpDir/recompile.sh
-        #$mcpDir/reobfuscate.sh
+        $mcpDir/recompile.sh
+        $mcpDir/reobfuscate.sh
         
         #Switch back to the repository directory
         cd $curDir

@@ -32,8 +32,18 @@ public class GameSettings
     public boolean invertMouse;
     public int renderDistance;
     public boolean viewBobbing;
-    public boolean anaglyph;
-
+    public float anaglyph;
+    
+    public boolean anaglyphEnabled()
+    {
+    	return (boolean)(anaglyph > 0);
+    }
+    
+    public float getAnaglyphOffset()
+    {
+    	return anaglyph * 0.1F;
+    }
+    
     /** Advanced OpenGL */
     public boolean advancedOpengl;
     public int limitFramerate;
@@ -106,7 +116,7 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph = false;
+        anaglyph = 0.0F;
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -160,7 +170,7 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph = false;
+        anaglyph = 0.0F;
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -276,6 +286,12 @@ public class GameSettings
         {
             gammaSetting = par2;
         }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH)
+        {
+        	anaglyph = par2;
+        	mc.renderEngine.refreshTextures();
+        }
     }
 
     /**
@@ -317,12 +333,6 @@ public class GameSettings
         {
             advancedOpengl = !advancedOpengl;
             mc.renderGlobal.loadRenderers();
-        }
-
-        if (par1EnumOptions == EnumOptions.ANAGLYPH)
-        {
-            anaglyph = !anaglyph;
-            mc.renderEngine.refreshTextures();
         }
 
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT)
@@ -371,6 +381,11 @@ public class GameSettings
         {
             return soundVolume;
         }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH)
+        {
+        	return anaglyph;
+        }
 
         if (par1EnumOptions == EnumOptions.SENSITIVITY)
         {
@@ -392,8 +407,8 @@ public class GameSettings
             case 2:
                 return viewBobbing;
 
-            case 3:
-                return anaglyph;
+            //case 3:
+            //    return anaglyph;
 
             case 4:
                 return advancedOpengl;
@@ -620,7 +635,7 @@ public class GameSettings
 
                     if (as[0].equals("anaglyph3d"))
                     {
-                        anaglyph = as[1].equals("true");
+                        anaglyph = parseFloat(as[1]);
                     }
 
                     if (as[0].equals("advancedOpengl"))

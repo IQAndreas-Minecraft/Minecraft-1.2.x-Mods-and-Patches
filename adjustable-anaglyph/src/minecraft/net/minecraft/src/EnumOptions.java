@@ -10,7 +10,7 @@ public enum EnumOptions
     GAMMA("options.gamma", true, false),
     RENDER_DISTANCE("options.renderDistance", false, false),
     VIEW_BOBBING("options.viewBobbing", false, true),
-    ANAGLYPH("options.anaglyph", false, true),
+    ANAGLYPH("options.anaglyph", true, false),
     ADVANCED_OPENGL("options.advancedOpengl", false, true),
     FRAMERATE_LIMIT("options.framerateLimit", false, false),
     DIFFICULTY("options.difficulty", false, false),

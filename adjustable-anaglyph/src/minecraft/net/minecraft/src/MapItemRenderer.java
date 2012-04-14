@@ -54,7 +54,7 @@ public class MapItemRenderer
             int k1 = ((l >> 8 & 0xff) * c) / 255;
             int l1 = ((l & 0xff) * c) / 255;
 
-            if (gameSettings.anaglyph)
+            if (gameSettings.anaglyphEnabled())
             {
                 int i2 = (j1 * 30 + k1 * 59 + l1 * 11) / 100;
                 int j2 = (j1 * 30 + k1 * 70) / 100;

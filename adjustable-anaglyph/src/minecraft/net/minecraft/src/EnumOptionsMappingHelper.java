@@ -20,11 +20,11 @@ class EnumOptionsMappingHelper
         }
         catch (NoSuchFieldError nosuchfielderror1) { }
 
-        try
+        /*try
         {
             enumOptionsMappingHelperArray[EnumOptions.ANAGLYPH.ordinal()] = 3;
         }
-        catch (NoSuchFieldError nosuchfielderror2) { }
+        catch (NoSuchFieldError nosuchfielderror2) { }*/
 
         try
         {

@@ -527,16 +527,17 @@ public class EntityRenderer
     /**
      * sets up projection, view effects, camera position/rotation
      */
-    private void setupCameraTransform(float par1, int par2)
+    private void setupCameraTransform(float par1, int anaglyphFieldID)
     {
         farPlaneDistance = 256 >> mc.gameSettings.renderDistance;
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        float f = 0.07F;
-
-        if (mc.gameSettings.anaglyph)
+        //float f = 0.07F;
+        float f = mc.gameSettings.getAnaglyphOffset();
+        
+        if (mc.gameSettings.anaglyphEnabled())
         {
-            GL11.glTranslatef((float)(-(par2 * 2 - 1)) * f, 0.0F, 0.0F);
+            GL11.glTranslatef((float)(-(anaglyphFieldID * 2 - 1)) * f, 0.0F, 0.0F);
         }
 
         if (cameraZoom != 1.0D)
@@ -556,9 +557,11 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
-            GL11.glTranslatef((float)(par2 * 2 - 1) * 0.1F, 0.0F, 0.0F);
+        	//TODO
+            //GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * f, 0.0F, 0.0F);
+            GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * 0.1F, 0.0F, 0.0F);
         }
 
         hurtCameraEffect(par1);
@@ -631,9 +634,10 @@ public class EntityRenderer
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        float f = 0.07F;
-
-        if (mc.gameSettings.anaglyph)
+        //float f = 0.07F;
+        float f = mc.gameSettings.getAnaglyphOffset();
+        
+        if (mc.gameSettings.anaglyphEnabled())
         {
             GL11.glTranslatef((float)(-(par2 * 2 - 1)) * f, 0.0F, 0.0F);
         }
@@ -655,8 +659,9 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
+        	// TODO
             GL11.glTranslatef((float)(par2 * 2 - 1) * 0.1F, 0.0F, 0.0F);
         }
 
@@ -912,7 +917,7 @@ public class EntityRenderer
             return;
         }
 
-        anaglyphEnable = mc.gameSettings.anaglyph;
+        anaglyphEnable = mc.gameSettings.anaglyphEnabled();
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int i = scaledresolution.getScaledWidth();
         int j = scaledresolution.getScaledHeight();
@@ -1052,7 +1057,7 @@ public class EntityRenderer
 
         for (int i = 0; i < 2; i++)
         {
-            if (mc.gameSettings.anaglyph)
+            if (mc.gameSettings.anaglyphEnabled())
             {
                 anaglyphField = i;
 
@@ -1168,7 +1173,7 @@ public class EntityRenderer
                 GL11.glColorMask(false, false, false, false);
                 int i1 = renderglobal.sortAndRender(entityliving, 1, par1);
 
-                if (mc.gameSettings.anaglyph)
+                if (mc.gameSettings.anaglyphEnabled())
                 {
                     if (anaglyphField == 0)
                     {
@@ -1237,7 +1242,7 @@ public class EntityRenderer
                 renderHand(par1, i);
             }
 
-            if (!mc.gameSettings.anaglyph)
+            if (!mc.gameSettings.anaglyphEnabled())
             {
                 Profiler.endSection();
                 return;
@@ -1654,7 +1659,7 @@ public class EntityRenderer
             fogColorBlue *= d;
         }
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
             float f11 = (fogColorRed * 30F + fogColorGreen * 59F + fogColorBlue * 11F) / 100F;
             float f12 = (fogColorRed * 30F + fogColorGreen * 70F) / 100F;
@@ -1738,7 +1743,7 @@ public class EntityRenderer
             float f5 = 1.0F;
             float f8 = 1.0F;
 
-            if (mc.gameSettings.anaglyph)
+            if (mc.gameSettings.anaglyphEnabled())
             {
                 float f11 = (f1 * 30F + f5 * 59F + f8 * 11F) / 100F;
                 float f15 = (f1 * 30F + f5 * 70F) / 100F;
@@ -1765,7 +1770,7 @@ public class EntityRenderer
             float f6 = 0.4F;
             float f9 = 0.9F;
 
-            if (mc.gameSettings.anaglyph)
+            if (mc.gameSettings.anaglyphEnabled())
             {
                 float f12 = (f2 * 30F + f6 * 59F + f9 * 11F) / 100F;
                 float f16 = (f2 * 30F + f6 * 70F) / 100F;
@@ -1783,7 +1788,7 @@ public class EntityRenderer
             float f7 = 0.3F;
             float f10 = 0.3F;
 
-            if (mc.gameSettings.anaglyph)
+            if (mc.gameSettings.anaglyphEnabled())
             {
                 float f13 = (f3 * 30F + f7 * 59F + f10 * 11F) / 100F;
                 float f17 = (f3 * 30F + f7 * 70F) / 100F;

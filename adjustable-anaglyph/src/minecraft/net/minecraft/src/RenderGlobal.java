@@ -612,7 +612,7 @@ public class RenderGlobal implements IWorldAccess
         RenderHelper.disableStandardItemLighting();
         int j = 0;
 
-        if (occlusionEnabled && mc.gameSettings.advancedOpengl && !mc.gameSettings.anaglyph && par2 == 0)
+        if (occlusionEnabled && mc.gameSettings.advancedOpengl && !mc.gameSettings.anaglyphEnabled() && par2 == 0)
         {
             int k = 0;
             int l = 16;
@@ -703,7 +703,7 @@ public class RenderGlobal implements IWorldAccess
 
                 GL11.glPopMatrix();
 
-                if (mc.gameSettings.anaglyph)
+                if (mc.gameSettings.anaglyphEnabled())
                 {
                     if (EntityRenderer.anaglyphField == 0)
                     {
@@ -936,7 +936,7 @@ public class RenderGlobal implements IWorldAccess
         float f1 = (float)vec3d.yCoord;
         float f2 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
             float f3 = (f * 30F + f1 * 59F + f2 * 11F) / 100F;
             float f4 = (f * 30F + f1 * 70F) / 100F;
@@ -971,7 +971,7 @@ public class RenderGlobal implements IWorldAccess
             float f8 = af[1];
             float f11 = af[2];
 
-            if (mc.gameSettings.anaglyph)
+            if (mc.gameSettings.anaglyphEnabled())
             {
                 float f14 = (f6 * 30F + f8 * 59F + f11 * 11F) / 100F;
                 float f17 = (f6 * 30F + f8 * 70F) / 100F;
@@ -1130,7 +1130,7 @@ public class RenderGlobal implements IWorldAccess
         float f2 = (float)vec3d.yCoord;
         float f3 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
             float f4 = (f1 * 30F + f2 * 59F + f3 * 11F) / 100F;
             float f6 = (f1 * 30F + f2 * 70F) / 100F;
@@ -1202,7 +1202,7 @@ public class RenderGlobal implements IWorldAccess
         float f5 = (float)vec3d.yCoord;
         float f6 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyph)
+        if (mc.gameSettings.anaglyphEnabled())
         {
             float f7 = (f4 * 30F + f5 * 59F + f6 * 11F) / 100F;
             float f9 = (f4 * 30F + f5 * 70F) / 100F;
@@ -1230,7 +1230,7 @@ public class RenderGlobal implements IWorldAccess
             {
                 GL11.glColorMask(false, false, false, false);
             }
-            else if (mc.gameSettings.anaglyph)
+            else if (mc.gameSettings.anaglyphEnabled())
             {
                 if (EntityRenderer.anaglyphField == 0)
                 {

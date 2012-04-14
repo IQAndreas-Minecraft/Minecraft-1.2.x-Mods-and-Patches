@@ -303,7 +303,7 @@ public class RenderEngine
             int i2 = ai[k] >> 8 & 0xff;
             int k2 = ai[k] & 0xff;
 
-            if (options != null && options.anaglyph)
+            if (options != null && options.anaglyphEnabled())
             {
                 int i3 = (k1 * 30 + i2 * 59 + k2 * 11) / 100;
                 int k3 = (k1 * 30 + i2 * 70) / 100;
@@ -391,7 +391,7 @@ public class RenderEngine
             int l = par1ArrayOfInteger[i] >> 8 & 0xff;
             int i1 = par1ArrayOfInteger[i] & 0xff;
 
-            if (options != null && options.anaglyph)
+            if (options != null && options.anaglyphEnabled())
             {
                 int j1 = (k * 30 + l * 59 + i1 * 11) / 100;
                 int k1 = (k * 30 + l * 70) / 100;
@@ -521,7 +521,7 @@ public class RenderEngine
         for (int j = 0; j < textureList.size(); j++)
         {
             TextureFX texturefx = (TextureFX)textureList.get(j);
-            texturefx.anaglyphEnabled = options.anaglyph;
+            texturefx.anaglyphEnabled = options.anaglyphEnabled();
             texturefx.onTick();
             imageData.clear();
             imageData.put(texturefx.imageData);

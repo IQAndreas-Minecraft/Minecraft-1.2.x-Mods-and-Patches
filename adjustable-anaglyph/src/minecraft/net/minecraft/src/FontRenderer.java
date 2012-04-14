@@ -162,7 +162,7 @@ public class FontRenderer
                 l1 += 85;
             }
 
-            if (par1GameSettings.anaglyph)
+            if (par1GameSettings.anaglyphEnabled())
             {
                 int i3 = (l1 * 30 + j2 * 59 + l2 * 11) / 100;
                 int k3 = (l1 * 30 + j2 * 70) / 100;

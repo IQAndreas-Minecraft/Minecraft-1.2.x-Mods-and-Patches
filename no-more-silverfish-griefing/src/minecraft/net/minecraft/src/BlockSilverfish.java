@@ -60,7 +60,29 @@ public class BlockSilverfish extends Block
      */
     public int quantityDropped(Random par1Random)
     {
-        return 0;
+        return 1;
+    }
+    
+    /**
+     * Returns the ID of the items to drop on destruction.
+     */
+    public int idDropped(int par1, Random par2Random, int par3)
+    {
+    	//Will drop the block it spawned out of as a standard block
+    	
+        if (par1 == 1)
+        {
+            return Block.cobblestone.idDropped(par1, par2Random, par3);
+        }
+
+        if (par1 == 2)
+        {
+            return Block.stoneBrick.idDropped(par1, par2Random, par3);
+        }
+        else
+        {
+            return Block.stone.idDropped(par1, par2Random, par3);
+        }
     }
 
     /**

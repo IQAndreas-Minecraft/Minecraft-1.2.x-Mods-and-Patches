@@ -10,6 +10,7 @@ else
     
     #Assume single player mod!
     reobfDir="$projectName/reobf/minecraft/*"
+    includesFile="$projectName/includes"
     zipDir="$projectName/zip"
     zipName="$zipDir/$projectName-$projectVersion.zip"
     
@@ -25,12 +26,37 @@ else
     if [ ! -e $licenseFile ]; then        licenseFile="LICENSE"; fi
     if [ ! -e $readmeFile ]; then         readmeFile="README"; fi
     
+    rm -f zip-temp
     mkdir -p zip-temp
-        cp -r $reobfDir zip-temp
+    
+        # Include other mod files 
+        #   TODO: Give a warning in case any files are overridden
+        if [ -e $includesFile ]; then
+            exec<$includesFile
+            while read includedProject
+            do
+                if [ -e $includedProject ]; then
+                    echo "Including project $includedProject"
+                    includedReobfDir="$includedProject/reobf/minecraft/*"
+                    cp -r $includedReobfDir zip-temp
+                else
+                    echo "Cannot find and include project $includedProject"
+                fi
+            done
+        fi
+    
+        # Include help files
+        echo "Adding help files"
         cp $installationFile zip-temp
         cp $licenseFile zip-temp
         cp $readmeFile zip-temp
-        zip -rj $zipName zip-temp/*
+        
+        # Then include the actual mod classes
+        echo "Adding classes for $projectName"
+        cp -r $reobfDir zip-temp
+    
+    echo "Building zip file"
+    zip -rj $zipName zip-temp/*
     rm -r zip-temp
     
     echo "Successfully created zip file $zipName"

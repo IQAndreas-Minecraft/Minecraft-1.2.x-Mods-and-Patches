@@ -23,7 +23,7 @@ public class RecipesCrafting
                 {
                     "##", "##", '#', Block.planks
                 });
-        par1CraftingManager.addRecipe(new ItemStack(Block.sandStone), new Object[]
+        par1CraftingManager.addRecipe(new ItemStack(Block.sandStone, 4), new Object[]
                 {
                     "##", "##", '#', Block.sand
                 });

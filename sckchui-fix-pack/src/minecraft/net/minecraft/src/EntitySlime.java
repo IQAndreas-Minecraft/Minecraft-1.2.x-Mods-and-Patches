@@ -258,6 +258,34 @@ public class EntitySlime extends EntityLiving implements IMob
             return 0;
         }
     }
+    
+    /**
+     * Checks to make sure the light is not too bright where the mob is spawning.
+     * Taken from EntityMob::isValidLightLevel()
+     */
+    protected boolean isValidLightLevel()
+    {
+        int i = MathHelper.floor_double(posX);
+        int j = MathHelper.floor_double(boundingBox.minY);
+        int k = MathHelper.floor_double(posZ);
+
+        if (worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > rand.nextInt(32))
+        {
+            return false;
+        }
+
+        int l = worldObj.getBlockLightValue(i, j, k);
+
+        if (worldObj.isThundering())
+        {
+            int i1 = worldObj.skylightSubtracted;
+            worldObj.skylightSubtracted = 10;
+            l = worldObj.getBlockLightValue(i, j, k);
+            worldObj.skylightSubtracted = i1;
+        }
+
+        return l <= rand.nextInt(8);
+    }
 
     /**
      * Checks if the entity's current position is a valid location to spawn this entity.
@@ -266,7 +294,7 @@ public class EntitySlime extends EntityLiving implements IMob
     {
         Chunk chunk = worldObj.getChunkFromBlockCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ));
 
-        if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && rand.nextInt(10) == 0 && chunk.getRandomWithSeed(0x3ad8025fL).nextInt(10) == 0 && posY < 40D)
+        if ((getSlimeSize() == 1 || worldObj.difficultySetting > 0) && posY < 40D && isValidLightLevel())
         {
             return super.getCanSpawnHere();
         }

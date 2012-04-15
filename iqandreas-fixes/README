@@ -1,0 +1,64 @@
+
+----------------------------------------------------------------
+    Minecraft Mods and Patches
+    Andreas Renberg (IQAndreas)
+    http://iqandreas.github.com/minecraft
+----------------------------------------------------------------
+
+    IQAndreas Fixes v1.2.5-01
+    For MineCraft 1.2.5 (will not work with older or newer versions)
+
+A collection if my favorite fixes to MineCraft.
+
+* Using a lava bucket in a furnace does not consume the bucket.
+* Cauldrons with water in them work as magical 1x1 infinite water sources.
+* Right-clicking a cauldron with a bucket of water will empty the bucket.
+* Insta-break items (such as torches and redstone) don't damage tools.
+* Endermen drop the blocks they are holding (such as grass and melons) when killed. This is a great way to get grass blocks without the Silk Touch enchantment.
+* Pumpkins don't require a solid block beneath them when placed and can therefore be placed on ceilings and walls.
+
+* The following recepies have become shapeless:
+    - Flint and steel
+    - Jack-o-lanterns
+    - Sticky pistons
+    - Storage minecarts
+    - Powered minecarts
+
+* You can create double half-slab blocks in your inventory (which you can build with without needing to place two half-slab blocks)
+    - Double smooth stone blocks are made with two smoothstone slabs
+    - Fireproof double wood blocks are made with two wood slabs
+
+* You can convert some double slabs back into full blocks
+    - Two cobblestone slabs become one cobblestone block
+    - Two stone brick slabs become one stone brick block
+    - Two brick slabs become one brick block
+
+
+    THIS IS A PATCH, NOT A MOD
+
+ - It will not affect your world save
+    No new items or blocks will be added to your maps. This means the mod can be uninstalled, reinstalled, or MineCraft upgraded (causing the patch to automatically uninstall) without any issues.
+    
+ - It is not meant to be compatible with other mods (including ModLoader or other mod APIs)
+    If you want mod compatability, send me all the information about the mod you want this patch to be compatible with. If able, I will contact the mod developer and if they are willing, create a compatible version.
+    
+ - It does not require any mod APIs
+    This patch modifies base classes in the MineCraft source code. No mod APIs are required to use it, nor can it be modified to use a mod API rather than modifying base classes (hooks just won't cut it!).
+
+----------------------------------------------------------------
+
+See INSTALLATION for full installation instructions.
+
+
+To recommend changes to the source code or request features
+https://github.com/IQAndreas/Minecraft-Mods-and-Patches
+
+Parts of the code owned by Mojang AB (used with permission)
+Parts of the code owned by Andreas Renberg (IQAndreas)
+
+The source is open so fixes can be recommended, but any use of the source or compiled code outside of the project (including using it in other mods) is strictly prohibited.
+
+If you want to use any part of the code in your own mods you need written permission from the author (Andreas Renberg), who can be contacted via the GitHub account "IQAndreas".
+
+See LICENSE for full terms of use.
+

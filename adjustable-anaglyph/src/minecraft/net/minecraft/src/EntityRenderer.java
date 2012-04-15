@@ -532,11 +532,12 @@ public class EntityRenderer
         farPlaneDistance = 256 >> mc.gameSettings.renderDistance;
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        //float f = 0.07F;
-        float f = mc.gameSettings.getAnaglyphOffset();
         
         if (mc.gameSettings.anaglyphEnabled())
         {
+            //TODO:
+            //float f = 0.07F;
+            float f = mc.gameSettings.getAnaglyph1Offset();
             GL11.glTranslatef((float)(-(anaglyphFieldID * 2 - 1)) * f, 0.0F, 0.0F);
         }
 
@@ -560,8 +561,9 @@ public class EntityRenderer
         if (mc.gameSettings.anaglyphEnabled())
         {
         	//TODO
-            //GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * f, 0.0F, 0.0F);
-            GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * 0.1F, 0.0F, 0.0F);
+        	//float f2 = 0.1F
+        	float f2 = mc.gameSettings.getAnaglyph2Offset();
+            GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * f2, 0.0F, 0.0F);
         }
 
         hurtCameraEffect(par1);
@@ -634,11 +636,12 @@ public class EntityRenderer
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        //float f = 0.07F;
-        float f = mc.gameSettings.getAnaglyphOffset();
         
         if (mc.gameSettings.anaglyphEnabled())
         {
+            //TODO
+            //float f = 0.07F;
+            float f = mc.gameSettings.getAnaglyph1Offset();
             GL11.glTranslatef((float)(-(par2 * 2 - 1)) * f, 0.0F, 0.0F);
         }
 
@@ -661,8 +664,10 @@ public class EntityRenderer
 
         if (mc.gameSettings.anaglyphEnabled())
         {
-        	// TODO
-            GL11.glTranslatef((float)(par2 * 2 - 1) * 0.1F, 0.0F, 0.0F);
+        	//TODO
+        	//float f2 = 0.1F;
+        	float f2 = mc.gameSettings.getAnaglyph2Offset();
+            GL11.glTranslatef((float)(par2 * 2 - 1) * f2, 0.0F, 0.0F);
         }
 
         GL11.glPushMatrix();

@@ -3,6 +3,7 @@ EnumOptions
 EnumOptionsMappingHelper
 FontRenderer
 GameSettings
+GuiVideoSettings
 MapItemRenderer
 RenderEngine
 RenderGlobal

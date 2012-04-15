@@ -32,16 +32,24 @@ public class GameSettings
     public boolean invertMouse;
     public int renderDistance;
     public boolean viewBobbing;
-    public float anaglyph;
-    
+    private float anaglyph1;
+    private float anaglyph2;
+
     public boolean anaglyphEnabled()
     {
-    	return (boolean)(anaglyph > 0);
+    	return (boolean)((anaglyph1 > 0) && (anaglyph2 > 0));
     }
     
-    public float getAnaglyphOffset()
+    public float getAnaglyph1Offset()
     {
-    	return anaglyph * 0.1F;
+    	//System.out.println(anaglyph1);
+    	return anaglyph1 * 0.1F;
+    }
+    
+    public float getAnaglyph2Offset()
+    {
+    	//System.out.println(anaglyph2);
+    	return anaglyph2 * 0.1F * 2;
     }
     
     /** Advanced OpenGL */
@@ -116,7 +124,8 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph = 0.0F;
+        anaglyph1 = 0.0F;
+        anaglyph2 = 0.0F;
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -170,7 +179,8 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph = 0.0F;
+        anaglyph1 = 0.0F;
+        anaglyph2 = 0.0F;
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -287,9 +297,15 @@ public class GameSettings
             gammaSetting = par2;
         }
         
-        if (par1EnumOptions == EnumOptions.ANAGLYPH)
+        if (par1EnumOptions == EnumOptions.ANAGLYPH1)
         {
-        	anaglyph = par2;
+        	anaglyph1 = par2;
+        	mc.renderEngine.refreshTextures();
+        }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH2)
+        {
+        	anaglyph2 = par2;
         	mc.renderEngine.refreshTextures();
         }
     }
@@ -381,10 +397,15 @@ public class GameSettings
         {
             return soundVolume;
         }
-        
-        if (par1EnumOptions == EnumOptions.ANAGLYPH)
+
+        if (par1EnumOptions == EnumOptions.ANAGLYPH1)
         {
-        	return anaglyph;
+        	return anaglyph1;
+        }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH2)
+        {
+        	return anaglyph2;
         }
 
         if (par1EnumOptions == EnumOptions.SENSITIVITY)
@@ -635,7 +656,12 @@ public class GameSettings
 
                     if (as[0].equals("anaglyph3d"))
                     {
-                        anaglyph = parseFloat(as[1]);
+                        anaglyph1 = parseFloat(as[1]);
+                    }
+
+                    if (as[0].equals("anaglyph3d2"))
+                    {
+                        anaglyph2 = parseFloat(as[1]);
                     }
 
                     if (as[0].equals("advancedOpengl"))
@@ -749,7 +775,8 @@ public class GameSettings
             printwriter.println((new StringBuilder()).append("guiScale:").append(guiScale).toString());
             printwriter.println((new StringBuilder()).append("particles:").append(particleSetting).toString());
             printwriter.println((new StringBuilder()).append("bobView:").append(viewBobbing).toString());
-            printwriter.println((new StringBuilder()).append("anaglyph3d:").append(anaglyph).toString());
+            printwriter.println((new StringBuilder()).append("anaglyph3d:").append(anaglyph1).toString());
+            printwriter.println((new StringBuilder()).append("anaglyph3d2:").append(anaglyph2).toString());
             printwriter.println((new StringBuilder()).append("advancedOpengl:").append(advancedOpengl).toString());
             printwriter.println((new StringBuilder()).append("fpsLimit:").append(limitFramerate).toString());
             printwriter.println((new StringBuilder()).append("difficulty:").append(difficulty).toString());

@@ -223,12 +223,20 @@ public class TileEntityFurnace extends TileEntity implements IInventory
 
                     if (furnaceItemStacks[1] != null)
                     {
-                        furnaceItemStacks[1].stackSize--;
-
-                        if (furnaceItemStacks[1].stackSize == 0)
-                        {
-                            furnaceItemStacks[1] = null;
-                        }
+                    	//If a bucket (or other type of container)
+                    	if (furnaceItemStacks[1].getItem().hasContainerItem())
+                    	{
+                    		furnaceItemStacks[1] = new ItemStack(furnaceItemStacks[1].getItem().getContainerItem());
+                    	}
+                    	else // Stack of regular items
+                    	{
+	                        furnaceItemStacks[1].stackSize--;
+	
+	                        if (furnaceItemStacks[1].stackSize == 0)
+	                        {
+	                            furnaceItemStacks[1] = null;
+	                        }
+                    	}
                     }
                 }
             }

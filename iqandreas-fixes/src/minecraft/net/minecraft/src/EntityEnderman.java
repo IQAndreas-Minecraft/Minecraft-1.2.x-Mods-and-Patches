@@ -381,6 +381,16 @@ public class EntityEnderman extends EntityMob
                 dropItem(i, 1);
             }
         }
+        
+        //If carrying an item, drop it
+        int carriedBlockID = getCarried();
+        int carriedBlockMetadata = getCarryingData();
+        
+        if (carriedBlockID > 0)
+        {
+        	entityDropItem(new ItemStack(carriedBlockID, 1, carriedBlockMetadata), 0.0F);
+        	setCarried(0); //No longer hold the block
+        }
     }
 
     /**

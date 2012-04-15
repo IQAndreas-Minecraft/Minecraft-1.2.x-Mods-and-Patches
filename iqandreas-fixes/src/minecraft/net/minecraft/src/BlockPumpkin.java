@@ -170,7 +170,8 @@ public class BlockPumpkin extends BlockDirectional
     public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int i = par1World.getBlockId(par2, par3, par4);
-        return (i == 0 || Block.blocksList[i].blockMaterial.isGroundCover()) && par1World.isBlockNormalCube(par2, par3 - 1, par4);
+        //	Blocks can now be placed on ceilings and walls
+        return (i == 0 || Block.blocksList[i].blockMaterial.isGroundCover());        
     }
 
     /**

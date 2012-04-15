@@ -198,18 +198,6 @@ public class CraftingManager
                 {
                     " B ", "###", '#', Block.cobblestone, 'B', Item.blazeRod
                 });
-        addRecipe(new ItemStack(Block.pumpkinLantern, 1), new Object[]
-                {
-                    "A", "B", 'A', Block.pumpkin, 'B', Block.torchWood
-                });
-        addRecipe(new ItemStack(Item.minecartCrate, 1), new Object[]
-                {
-                    "A", "B", 'A', Block.chest, 'B', Item.minecartEmpty
-                });
-        addRecipe(new ItemStack(Item.minecartPowered, 1), new Object[]
-                {
-                    "A", "B", 'A', Block.stoneOvenIdle, 'B', Item.minecartEmpty
-                });
         addRecipe(new ItemStack(Item.boat, 1), new Object[]
                 {
                     "# #", "###", '#', Block.planks
@@ -217,10 +205,6 @@ public class CraftingManager
         addRecipe(new ItemStack(Item.bucketEmpty, 1), new Object[]
                 {
                     "# #", " # ", '#', Item.ingotIron
-                });
-        addRecipe(new ItemStack(Item.flintAndSteel, 1), new Object[]
-                {
-                    "A ", " B", 'A', Item.ingotIron, 'B', Item.flint
                 });
         addRecipe(new ItemStack(Item.bread, 1), new Object[]
                 {
@@ -303,10 +287,6 @@ public class CraftingManager
                     "TTT", "#X#", "#R#", '#', Block.cobblestone, 'X', Item.ingotIron, 'R', Item.redstone, 'T',
                     Block.planks
                 });
-        addRecipe(new ItemStack(Block.pistonStickyBase, 1), new Object[]
-                {
-                    "S", "P", 'S', Item.slimeBall, 'P', Block.pistonBase
-                });
         addRecipe(new ItemStack(Item.bed, 1), new Object[]
                 {
                     "###", "XXX", '#', Block.cloth, 'X', Block.planks
@@ -314,6 +294,28 @@ public class CraftingManager
         addRecipe(new ItemStack(Block.enchantmentTable, 1), new Object[]
                 {
                     " B ", "D#D", "###", '#', Block.obsidian, 'B', Item.book, 'D', Item.diamond
+                });
+
+        // ------------ SHAPELESS RECIPES ------------------
+        addShapelessRecipe(new ItemStack(Block.pumpkinLantern, 1), new Object[]
+                {
+                    Block.pumpkin, Block.torchWood
+                });
+        addShapelessRecipe(new ItemStack(Item.flintAndSteel, 1), new Object[]
+        		{
+        			Item.ingotIron, Item.flint
+        		});
+        addShapelessRecipe(new ItemStack(Block.pistonStickyBase, 1), new Object[]
+        		{
+	        		Block.pistonBase, Item.slimeBall
+        		});
+        addShapelessRecipe(new ItemStack(Item.minecartCrate, 1), new Object[]
+                {
+        			Item.minecartEmpty, Block.chest 
+                });
+        addShapelessRecipe(new ItemStack(Item.minecartPowered, 1), new Object[]
+                {
+        			Item.minecartEmpty, Block.stoneOvenIdle 
                 });
         addShapelessRecipe(new ItemStack(Item.eyeOfEnder, 1), new Object[]
                 {

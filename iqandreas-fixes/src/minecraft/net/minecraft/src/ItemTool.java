@@ -52,8 +52,17 @@ public class ItemTool extends Item
 
     public boolean onBlockDestroyed(ItemStack par1ItemStack, int par2, int par3, int par4, int par5, EntityLiving par6EntityLiving)
     {
-        par1ItemStack.damageItem(1, par6EntityLiving);
-        return true;
+    	// Only damage items that aren't insta-break items (such as torches or redstone)
+    	Block block = Block.blocksList[par2];
+    	if (block.getHardness() > 0)
+    	{
+    		par1ItemStack.damageItem(1, par6EntityLiving);
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
     }
 
     /**

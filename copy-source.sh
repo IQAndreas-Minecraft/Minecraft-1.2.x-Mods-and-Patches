@@ -7,28 +7,51 @@ else
     #Aliases for clarity
     projectName=$1 #relative
     
-    mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
-    #mcpSrcDir="$mcpDir/src/minecraft"
-    #targetSrcDir="$projectName/src/minecraft"
-    mcpSrcDir="$mcpDir/src/minecraft/net/minecraft/src"
-    targetSrcDir="$projectName/src/minecraft/net/minecraft/src"
+    copySourceFiles()
+    {
+        # Dictates whether minecraft single player or multi-player (or even other)
+        version=$1
     
-    #Should I also delete the existing source?
-    mkdir -p $targetSrcDir
-    
-    srcFileList="$projectName/src/src-files-minecraft"
-    #srcFileList="$projectName/src/src-files-minecraft-server"
-    
-    exec<$srcFileList
-    while read fileName
-    do
-        srcFile="$mcpSrcDir/$fileName.java"
-        if [ -e $srcFile ]; then
-            targetFile="$targetSrcDir/$fileName.java"
-            cp -r $srcFile $targetFile
-            echo "Copying $fileName.java"
+        mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
+
+        # By default, all classes should be in the package "net.minecraft.src.*"        
+        #mcpSrcDir="$mcpDir/src/$version"
+        #targetSrcDir="$projectName/src/$version"
+
+        mcpSrcDir="$mcpDir/src/$version/net/minecraft/src"
+        targetSrcDir="$projectName/src/$version/net/minecraft/src"
+        srcFileList="$projectName/src-files-$version"
+        
+        #Ignore if the 'src-files' file does not exist
+        if [ ! -e $srcFileList ]; then 
+            echo "Skipping source for $version"
         else
-            echo "ERROR: Could not find $fileName.java."
+        
+            echo "Copying source for $version"
+        
+            # Should I also delete the existing source?
+            mkdir -p $targetSrcDir
+            
+            exec<$srcFileList
+            while read fileName
+            do
+                srcFile="$mcpSrcDir/$fileName.java"
+                if [ -e $srcFile ]; then
+                    targetFile="$targetSrcDir/$fileName.java"
+                    cp -r $srcFile $targetFile
+                    echo "   Copying $fileName.java"
+                else
+                    echo "ERROR: Could not find $fileName.java."
+                fi
+            done
+            
         fi
-    done
+    }
+    
+    # Single player
+    copySourceFiles 'minecraft' 
+    
+    # Multi-player
+    copySourceFiles 'minecraft_server'
+    
 fi

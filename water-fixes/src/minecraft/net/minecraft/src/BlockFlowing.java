@@ -80,11 +80,27 @@ public class BlockFlowing extends BlockFluid
                 }
             }
 
+            // Infinite water spring
             if (numAdjacentSources >= 2 && blockMaterial == Material.water)
             {
                 if (par1World.getBlockMaterial(par2, par3 - 1, par4).isSolid())
                 {
                     k = 0;
+                }
+                else if (par1World.getBlockMaterial(par2, par3 - 1, par4) == Material.water)
+                {
+                	//If water beneath
+                	
+                	if (numAdjacentSources >= 3)
+                	{
+                		//Refill if three or four water source neighbors
+                		k = 0;
+                	}
+                	else if (numAdjacentSolids(par1World, par2, par3, par4) >= 2) // numAdjacentSources will here be 2
+                	{
+                		//If surrounded by two water source blocks and two solid blocks
+                		k = 0;
+                	}
                 }
                 else if (par1World.getBlockMaterial(par2, par3 - 1, par4) == blockMaterial && par1World.getBlockMetadata(par2, par3, par4) == 0)
                 {
@@ -131,14 +147,19 @@ public class BlockFlowing extends BlockFluid
                 triggerLavaMixEffects(par1World, par2, par3 - 1, par4);
                 return;
             }
+            
+           	//Now drop block as item (no more destroying torches or crops!)
+        	int replacedBlockID = par1World.getBlockId(par2, par3 - 1, par4);
+        	Block.blocksList[replacedBlockID].dropBlockAsItem(par1World, par2, par3 - 1, par4, par1World.getBlockMetadata(par2, par3 - 1, par4), 0);
 
+        	//Now add flowing water
             if (i >= 8)
             {
                 par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, blockID, i);
             }
             else
             {
-                par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, blockID, i + 8);
+            	par1World.setBlockAndMetadataWithNotify(par2, par3 - 1, par4, blockID, i + 8);
             }
         }
         else if (i >= 0 && (i == 0 || blockBlocksFlow(par1World, par2, par3 - 1, par4)))
@@ -176,6 +197,17 @@ public class BlockFlowing extends BlockFluid
                 flowIntoBlock(par1World, par2, par3, par4 + 1, l);
             }
         }
+    }
+    
+    int numAdjacentSolids(World world, int x, int y, int z)
+    {
+        int numSolids = 0;
+        numSolids += world.getBlockMaterial(x + 1, y, z    ).isSolid() ? 1 : 0;
+        numSolids += world.getBlockMaterial(x - 1, y, z    ).isSolid() ? 1 : 0;
+        numSolids += world.getBlockMaterial(x    , y, z + 1).isSolid() ? 1 : 0;
+        numSolids += world.getBlockMaterial(x    , y, z - 1).isSolid() ? 1 : 0;
+        
+        return numSolids;
     }
 
     /**

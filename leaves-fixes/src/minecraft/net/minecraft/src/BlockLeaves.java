@@ -232,10 +232,12 @@ public class BlockLeaves extends BlockLeavesBase
 
     /**
      * Returns the quantity of items to drop on block destruction.
+     * Now increases this amount based on the "fortune" amount
      */
-    public int quantityDropped(Random par1Random)
+    public int quantityDroppedWithBonus(int bonus, Random random)
     {
-        return par1Random.nextInt(20) != 0 ? 0 : 1;
+    	int odds = (bonus >= 20) ? 1 : (20 - bonus);
+        return random.nextInt(odds) != 0 ? 0 : 1;
     }
 
     /**
@@ -248,26 +250,30 @@ public class BlockLeaves extends BlockLeavesBase
 
     /**
      * Drops the block items with a specified chance of dropping the specified items
+     * (ignoring the "with chance" parameter?)
      */
     public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
     {
         if (!par1World.isRemote)
         {
-            byte byte0 = 20;
+            int saplingOdds = ((par5 & 3) == 3) ? 20 : 40;
+            int saplingFortuneBonus = par7 * 2;
+            saplingOdds = (saplingFortuneBonus >= saplingOdds) ? 1 : (saplingOdds - saplingFortuneBonus);
 
-            if ((par5 & 3) == 3)
+            if (par1World.rand.nextInt(saplingOdds) == 0)
             {
-                byte0 = 40;
+            	// Sapling
+                int saplingItemID = idDropped(par5, par1World.rand, par7);
+                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(saplingItemID, 1, damageDropped(par5)));
             }
 
-            if (par1World.rand.nextInt(byte0) == 0)
+            //Account for enchantment bonus
+            int appleOdds = 200 - (par7 * 4);
+            if (appleOdds <= 0) { appleOdds = 1; }
+            
+            if ((par5 & 3) == 0 && par1World.rand.nextInt(appleOdds) == 0)
             {
-                int i = idDropped(par5, par1World.rand, par7);
-                dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(i, 1, damageDropped(par5)));
-            }
-
-            if ((par5 & 3) == 0 && par1World.rand.nextInt(200) == 0)
-            {
+            	// Apple
                 dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
             }
         }
@@ -279,14 +285,47 @@ public class BlockLeaves extends BlockLeavesBase
      */
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
-        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.shiftedIndex)
+    	if (par1World.isRemote) return; //I should be doing this, right?
+    	
+        if (par2EntityPlayer.getCurrentEquippedItem() != null && (par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.shiftedIndex))
         {
-            par2EntityPlayer.addStat(StatList.mineBlockStatArray[blockID], 1);
-            dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Block.leaves.blockID, 1, par6 & 3));
+        	// Harvested with shears
+        	par2EntityPlayer.addStat(StatList.mineBlockStatArray[blockID], 1);
+        	dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Block.leaves.blockID, 1, par6 & 3));
         }
         else
         {
-            super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
+    		par2EntityPlayer.addStat(StatList.mineBlockStatArray[blockID], 1);
+    		
+    		//Double the odds of dropping an item
+    		int enchantmentBonus = EnchantmentHelper.getFortuneModifier(par2EntityPlayer.inventory);
+    		this.dropBlockAsItemWithChance(par1World, par3, par4, par5, par6, 1.0F, enchantmentBonus);
+    		this.dropBlockAsItemWithChance(par1World, par3, par4, par5, par6, 1.0F, enchantmentBonus);
+    		
+    		if (par1World.rand.nextInt(4) == 0)
+    		{
+    			// 25% chance of dropping 1-2 sticks (or more if "fortune" is on)
+    			int numSticks = par1World.rand.nextInt(2 + enchantmentBonus) + 1;
+    			dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Item.stick, numSticks));
+    		}
+    		
+    		
+    		//EASTER EGG!!
+    		// If harvesting with a golden axe, drop golden apples with probability
+    		if ((par2EntityPlayer.getCurrentEquippedItem() != null) && (par2EntityPlayer.getCurrentEquippedItem().itemID == Item.axeGold.shiftedIndex))
+    		{
+                //Account for enchantment bonus
+                int appleOdds = 50 - (enchantmentBonus * 4);
+                if (appleOdds <= 0) { appleOdds = 1; }
+                
+                // Only for oak trees
+                if ((par5 & 3) == 0 && par1World.rand.nextInt(appleOdds) == 0)
+                {
+                    dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(Item.appleGold, 1, 0));
+                }
+    		}
+        	
+    		//super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
         }
     }
 

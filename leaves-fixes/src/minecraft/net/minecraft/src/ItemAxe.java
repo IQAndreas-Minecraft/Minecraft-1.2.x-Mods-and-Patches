@@ -24,12 +24,18 @@ public class ItemAxe extends ItemTool
             return super.getStrVsBlock(par1ItemStack, par2Block);
         }
     }
+    
+    @Override
+    public boolean canHarvestBlock(Block block) 
+    {
+    	return (block.blockMaterial == Material.leaves);
+    }
 
     static
     {
         blocksEffectiveAgainst = (new Block[]
                 {
-                    Block.planks, Block.bookShelf, Block.wood, Block.chest, Block.stairDouble, Block.stairSingle, Block.pumpkin, Block.pumpkinLantern
+                    Block.planks, Block.bookShelf, Block.wood, Block.leaves, Block.chest, Block.stairDouble, Block.stairSingle, Block.pumpkin, Block.pumpkinLantern
                 });
     }
 }

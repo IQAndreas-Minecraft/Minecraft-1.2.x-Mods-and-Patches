@@ -25,6 +25,6 @@ public class MaterialLogic extends Material
      */
     public boolean blocksMovement()
     {
-        return false;
+        return true;
     }
 }

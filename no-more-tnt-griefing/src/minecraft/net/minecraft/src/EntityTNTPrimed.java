@@ -91,7 +91,7 @@ public class EntityTNTPrimed extends Entity
     private void explode()
     {
         float f = 4F;
-        worldObj.createExplosion(null, posX, posY, posZ, f);
+        worldObj.createCustomExplosion(null, posX, posY, posZ, f, false, false);
     }
 
     /**

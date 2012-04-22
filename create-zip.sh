@@ -36,7 +36,7 @@ else
             while read includedProject
             do
                 if [ -e $includedProject ]; then
-                    echo "Including project $includedProject"
+                    echo "Adding classes for $includedProject"
                     includedReobfDir="$includedProject/reobf/minecraft/*"
                     cp -r $includedReobfDir zip-temp
                 else

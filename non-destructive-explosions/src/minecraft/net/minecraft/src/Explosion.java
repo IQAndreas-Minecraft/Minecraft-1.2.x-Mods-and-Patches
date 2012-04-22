@@ -22,7 +22,7 @@ public class Explosion
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
         isFlaming = false;
-        isDestructive = false;
+        isDestructive = true;
         explosionRNG = new Random();
         destroyedBlockPositions = new HashSet();
         worldObj = par1World;
@@ -41,7 +41,7 @@ public class Explosion
         float f = explosionSize;
         int i = 16;
 
-        // Destroy blocks
+        // Count destroyable blocks
         if (this.isDestructive) 
         {
 	        for (int j = 0; j < i; j++)

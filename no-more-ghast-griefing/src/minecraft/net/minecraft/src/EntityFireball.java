@@ -230,7 +230,7 @@ public class EntityFireball extends Entity
                 if (!par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, shootingEntity), 4));
             }
 
-            worldObj.newExplosion(null, posX, posY, posZ, 1.0F, true);
+            worldObj.createCustomExplosion(null, posX, posY, posZ, 1.0F, true, false);
             setDead();
         }
     }

@@ -99,19 +99,21 @@ public class BlockCauldron extends Block
 
         if (itemstack.itemID == Item.bucketWater.shiftedIndex)
         {
+        	//Empty bucket even if the cauldron is full
+            if (!par5EntityPlayer.capabilities.isCreativeMode)
+            {
+                par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketEmpty));
+            }
+
             if (i < 3)
             {
-                if (!par5EntityPlayer.capabilities.isCreativeMode)
-                {
-                    par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketEmpty));
-                }
-
-                par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
+            	par1World.setBlockMetadataWithNotify(par2, par3, par4, 3);
             }
 
             return true;
         }
-
+        
+        // Fill potion bottles
         if (itemstack.itemID == Item.glassBottle.shiftedIndex && i > 0)
         {
             ItemStack itemstack1 = new ItemStack(Item.potion, 1, 0);
@@ -128,7 +130,21 @@ public class BlockCauldron extends Block
                 par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, null);
             }
 
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, i - 1);
+            //Don't empty cauldron
+            //par1World.setBlockMetadataWithNotify(par2, par3, par4, i - 1);
+            
+            return true;
+        }
+        
+        //Fill bucket from cauldron
+        if (itemstack.itemID == Item.bucketEmpty.shiftedIndex)
+        {
+        	par5EntityPlayer.inventory.setInventorySlotContents(par5EntityPlayer.inventory.currentItem, new ItemStack(Item.bucketWater));
+
+            //Don't empty cauldron
+            //par1World.setBlockMetadataWithNotify(par2, par3, par4, i - 1);
+        	
+        	return true;
         }
 
         return true;

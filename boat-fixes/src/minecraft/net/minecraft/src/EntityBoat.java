@@ -106,17 +106,7 @@ public class EntityBoat extends Entity
                 riddenByEntity.mountEntity(this);
             }
 
-            for (int i = 0; i < 3; i++)
-            {
-                dropItemWithOffset(Block.planks.blockID, 1, 0.0F);
-            }
-
-            for (int j = 0; j < 2; j++)
-            {
-                dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
-            }
-
-            setDead();
+            this.destroy();
         }
 
         return true;
@@ -130,6 +120,15 @@ public class EntityBoat extends Entity
         setForwardDirection(-getForwardDirection());
         setTimeSinceHit(10);
         setDamageTaken(getDamageTaken() * 11);
+    }
+    
+    /** 
+     * Destroys the boat and drops it as a "boat" item (rather than planks and sticks)
+     */
+    public void destroy()
+    {
+    	dropItemWithOffset(Item.boat.shiftedIndex, 1, 0.0F);
+        setDead();
     }
 
     /**
@@ -326,17 +325,7 @@ public class EntityBoat extends Entity
         {
             if (!worldObj.isRemote)
             {
-                setDead();
-
-                for (int k = 0; k < 3; k++)
-                {
-                    dropItemWithOffset(Block.planks.blockID, 1, 0.0F);
-                }
-
-                for (int l = 0; l < 2; l++)
-                {
-                    dropItemWithOffset(Item.stick.shiftedIndex, 1, 0.0F);
-                }
+                this.destroy();
             }
         }
         else

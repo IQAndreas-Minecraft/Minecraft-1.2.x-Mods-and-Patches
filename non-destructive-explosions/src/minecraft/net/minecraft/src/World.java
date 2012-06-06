@@ -147,7 +147,7 @@ public class World implements IBlockAccess
 
             if (chunk != null)
             {
-                return chunk.func_48490_a(par1 & 0xf, par2 & 0xf, worldProvider.worldChunkMgr);
+                return chunk.getBiomeGenForWorldCoords(par1 & 0xf, par2 & 0xf, worldProvider.worldChunkMgr);
             }
         }
 
@@ -1462,7 +1462,8 @@ public class World implements IBlockAccess
     }
 
     /**
-     * Plays a sound at the entity's position. Args: entity, sound, unknown1, volume (relative to 1.0)
+     * Plays a sound at the entity's position. Args: entity, sound, volume (relative to 1.0), and frequency (or pitch,
+     * also relative to 1.0).
      */
     public void playSoundAtEntity(Entity par1Entity, String par2Str, float par3, float par4)
     {
@@ -4088,7 +4089,11 @@ public class World implements IBlockAccess
         return entityplayer;
     }
 
-    public EntityPlayer func_48456_a(double par1, double par3, double par5)
+    /**
+     * Finds the nearest player horizontally to a point. Args: X, Z, max distance. Returns null if no player is found
+     * within the maximum distance.
+     */
+    public EntityPlayer getClosestPlayerHorizontal(double par1, double par3, double par5)
     {
         double d = -1D;
         EntityPlayer entityplayer = null;
@@ -4313,15 +4318,16 @@ public class World implements IBlockAccess
     }
 
     /**
-     * plays a given note at x, y, z. args: x, y, z, instrument, note
+     * Calls receiveClientEvent of the tile entity at the given location on the server and all nearby clients with the
+     * given event number and parameter. Args: X, Y, Z, event number, parameter
      */
-    public void playNoteAt(int par1, int par2, int par3, int par4, int par5)
+    public void sendClientEvent(int par1, int par2, int par3, int par4, int par5)
     {
         int i = getBlockId(par1, par2, par3);
 
         if (i > 0)
         {
-            Block.blocksList[i].powerBlock(this, par1, par2, par3, par4, par5);
+            Block.blocksList[i].receiveClientEvent(this, par1, par2, par3, par4, par5);
         }
     }
 

@@ -5,10 +5,13 @@
     http://iqandreas.github.com/minecraft
 ----------------------------------------------------------------
 
-    No More Ghast Griefing! Patch v1.2.5-02
+    No More Ghast Griefing! Patch v1.2.5-03
     For MineCraft 1.2.5 (will not work with older or newer versions)
 
-Fireballs from Ghasts no longer destroy blocks when they explode (but they can still hurt you or other entities and set flame to nearby flammable blocks).
+Fireballs from Ghasts no longer destroy blocks when they explode. They can still hurt you or other entities, and will still set flame to nearby flammable blocks (so as usual, don't build wood houses in the Nether!).
+
+NOTE: There is also a version of this patch that does not destroy blocks or create fire, leaving your Nether buildings entirely safe! See the blog for more details:
+http://iqandreas.github.com/minecraft/no-more-ghast-griefing/
 
 
     THIS IS A PATCH, NOT A MOD

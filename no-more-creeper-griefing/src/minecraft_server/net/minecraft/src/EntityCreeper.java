@@ -102,11 +102,11 @@ public class EntityCreeper extends EntityMob
                 {
                     if (getPowered())
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, 6F);
+                        worldObj.createCustomExplosion(this, posX, posY, posZ, 6F, false, false);
                     }
                     else
                     {
-                        worldObj.createExplosion(this, posX, posY, posZ, 3F);
+                        worldObj.createCustomExplosion(this, posX, posY, posZ, 3F, false, false);
                     }
 
                     setDead();

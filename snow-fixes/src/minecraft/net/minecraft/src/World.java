@@ -3137,9 +3137,11 @@ public class World implements IBlockAccess
                     setBlockWithNotify(l1 + k, j3 - 1, k2 + l, Block.ice.blockID);
                 }
 
-                if (isRaining() && canSnowAt(l1 + k, j3, k2 + l))
+                if (isRaining())
                 {
-                    setBlockWithNotify(l1 + k, j3, k2 + l, Block.snow.blockID);
+                	// 1 in 4 chance of also snowing under trees and other transparent objects
+                	//   (in addition to 1 in 16 chance of snowing at all)
+                	trySnowingAt(l1 + k, j3, k2 + l, rand.nextInt(4) == 0);
                 }
             }
 
@@ -3265,17 +3267,52 @@ public class World implements IBlockAccess
 
         if (par2 >= 0 && par2 < 256 && getSavedLightValue(EnumSkyBlock.Block, par1, par2, par3) < 10)
         {
-            int i = getBlockId(par1, par2 - 1, par3);
-            int j = getBlockId(par1, par2, par3);
-
-            if (j == 0 && Block.snow.canPlaceBlockAt(this, par1, par2, par3) && i != 0 && i != Block.ice.blockID && Block.blocksList[i].blockMaterial.blocksMovement())
+            int belowBlockID = getBlockId(par1, par2 - 1, par3);
+            int currentBlockID = getBlockId(par1, par2, par3);
+            Material currentBlockMaterial = getBlockMaterial(par1, par2, par3);
+            
+            //Nested "ifs" are easier to read
+            if (currentBlockID == 0 || currentBlockMaterial == Material.plants || currentBlockMaterial == Material.vine)
             {
-                return true;
+	            if (Block.snow.canPlaceBlockAt(this, par1, par2, par3) && belowBlockID != 0 && belowBlockID != Block.ice.blockID && Block.blocksList[belowBlockID].blockMaterial.blocksMovement())
+	            {
+	                return true;
+	            }
             }
         }
 
         return false;
     }
+    
+    public void trySnowingAt(int x, int y, int z, boolean snowUnderLeaves)
+    {
+    	if (canSnowAt(x, y, z))
+        {
+            setBlockWithNotify(x, y, z, Block.snow.blockID);
+            
+            if (snowUnderLeaves && (getBlockMaterial(x, y - 1, z) == Material.leaves))
+            {
+            	//Keep looping down until we get snow under the tree as well.
+            	int currentY = y - 1;
+            	while ((currentY > 0) && (!blocksSnowFall(x, currentY - 1, z)))
+        		{
+            		currentY--;
+        		}
+            	
+            	if (canSnowAt(x, currentY, z))
+            	{
+            		setBlockWithNotify(x, currentY, z, Block.snow.blockID);
+            	}
+            }
+        }
+    }
+    
+    private boolean blocksSnowFall(int x, int y, int z)
+    {
+    	Material blockMaterial = getBlockMaterial(x, y, z);
+    	return (blockMaterial != Material.leaves && blockMaterial.blocksMovement());
+    }
+    
 
     public void updateAllLightTypes(int par1, int par2, int par3)
     {

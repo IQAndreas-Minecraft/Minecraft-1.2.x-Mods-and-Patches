@@ -523,16 +523,14 @@ public class ChunkProviderGenerate implements IChunkProvider
                 {
                     worldObj.setBlockWithNotify(k1 + i, l3 - 1, l2 + j, Block.ice.blockID);
                 }
-
-                if (worldObj.canSnowAt(k1 + i, l3, l2 + j))
-                {
-                    worldObj.setBlockWithNotify(k1 + i, l3, l2 + j, Block.snow.blockID);
-                }
+                
+                worldObj.trySnowingAt(k1 + i, l3, l2 + j, true);
             }
         }
 
         BlockSand.fallInstantly = false;
     }
+    
 
     /**
      * Two modes of operation: if passed true, save all Chunks in one go.  If passed false, save up to two chunks.

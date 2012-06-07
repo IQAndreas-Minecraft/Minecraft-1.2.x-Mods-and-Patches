@@ -2113,18 +2113,28 @@ public class World implements IBlockAccess
     /**
      * Creates an explosion. Args: entity, x, y, z, strength
      */
+    // Keep for reverse compatibility (EntityCreeper, EntityEnderCrystal, EntityTNTPrimed)
     public Explosion createExplosion(Entity par1Entity, double par2, double par4, double par6, float par8)
     {
-        return newExplosion(par1Entity, par2, par4, par6, par8, false);
+    	// Non flammable, destructive
+        return createCustomExplosion(par1Entity, par2, par4, par6, par8, false, true);
     }
-
+    
+    // Keep for reverse compatibility (EntityFireball, BlockBed)
+    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean flamingExplosion)
+    {
+    	// Flaming is parameter, destructive
+    	return createCustomExplosion(par1Entity, par2, par4, par6, par8, flamingExplosion, true);
+    }
+    
     /**
      * returns a new explosion. Does initiation (at time of writing Explosion is not finished)
      */
-    public Explosion newExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean par9)
+    public Explosion createCustomExplosion(Entity par1Entity, double par2, double par4, double par6, float par8, boolean isFlaming, boolean isDestructive)
     {
         Explosion explosion = new Explosion(this, par1Entity, par2, par4, par6, par8);
-        explosion.isFlaming = par9;
+        explosion.isFlaming = isFlaming;
+        explosion.isDestructive = isDestructive;
         explosion.doExplosionA();
         explosion.doExplosionB(true);
         return explosion;

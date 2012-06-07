@@ -6,6 +6,10 @@ public class Explosion
 {
     /** whether or not the explosion sets fire to blocks around it */
     public boolean isFlaming;
+    
+    /** whether or not the explosion destroys blocks around it */
+    public boolean isDestructive;
+
     private Random explosionRNG;
     private World worldObj;
     public double explosionX;
@@ -18,6 +22,7 @@ public class Explosion
     public Explosion(World par1World, Entity par2Entity, double par3, double par5, double par7, float par9)
     {
         isFlaming = false;
+        isDestructive = true;
         explosionRNG = new Random();
         destroyedBlockPositions = new HashSet();
         worldObj = par1World;
@@ -36,6 +41,7 @@ public class Explosion
         float f = explosionSize;
         int i = 16;
 
+        // Count destroyable blocks
         for (int j = 0; j < i; j++)
         {
             for (int l = 0; l < i; l++)
@@ -56,7 +62,7 @@ public class Explosion
                     d /= d3;
                     d1 /= d3;
                     d2 /= d3;
-                    float f1 = explosionSize * (0.7F + worldObj.rand.nextFloat() * 0.6F);
+                    float currentExplosionStrength = explosionSize * (0.7F + worldObj.rand.nextFloat() * 0.6F);
                     double d5 = explosionX;
                     double d7 = explosionY;
                     double d9 = explosionZ;
@@ -64,7 +70,7 @@ public class Explosion
 
                     do
                     {
-                        if (f1 <= 0.0F)
+                        if (currentExplosionStrength <= 0.0F)
                         {
                             continue label0;
                         }
@@ -72,14 +78,33 @@ public class Explosion
                         int l2 = MathHelper.floor_double(d5);
                         int i3 = MathHelper.floor_double(d7);
                         int j3 = MathHelper.floor_double(d9);
-                        int k3 = worldObj.getBlockId(l2, i3, j3);
+                        int blockID = worldObj.getBlockId(l2, i3, j3);
 
-                        if (k3 > 0)
+                        if (blockID > 0)
                         {
-                            f1 -= (Block.blocksList[k3].getExplosionResistance(exploder) + 0.3F) * f2;
+                        	//Can set off TNT even if "non-destructive"
+                        	if (this.isDestructive)
+                        	{
+                        		//Subtract explosion resistance
+                        		currentExplosionStrength -= (Block.blocksList[blockID].getExplosionResistance(exploder) + 0.3F) * f2;
+                        	}
+                        	else
+                        	{
+                        		if (worldObj.getBlockMaterial(l2, i3, j3).blocksMovement())
+                        		{
+                        			//All solid blocks, stop explosion here
+                        			currentExplosionStrength = 0;
+                        		}
+                        		else
+                        		{
+                        			//Otherwise, keep going, subtracting explosion resistance as usual
+                        			// (duplicate code, I know, but the "if" statement just looked wonky)
+                        			currentExplosionStrength -= (Block.blocksList[blockID].getExplosionResistance(exploder) + 0.3F) * f2;
+                        		}
+                        	}
                         }
 
-                        if (f1 > 0.0F)
+                        if (currentExplosionStrength > 0.0F)
                         {
                             destroyedBlockPositions.add(new ChunkPosition(l2, i3, j3));
                         }
@@ -87,13 +112,16 @@ public class Explosion
                         d5 += d * (double)f2;
                         d7 += d1 * (double)f2;
                         d9 += d2 * (double)f2;
-                        f1 -= f2 * 0.75F;
+                        currentExplosionStrength -= f2 * 0.75F;
                     }
                     while (true);
                 }
             }
         }
-
+        
+        
+        // Damage entities
+        
         explosionSize *= 2.0F;
         int k = MathHelper.floor_double(explosionX - (double)explosionSize - 1.0D);
         int i1 = MathHelper.floor_double(explosionX + (double)explosionSize + 1.0D);
@@ -138,18 +166,21 @@ public class Explosion
      */
     public void doExplosionB(boolean par1)
     {
+    	// Particles and sounds
         worldObj.playSoundEffect(explosionX, explosionY, explosionZ, "random.explode", 4F, (1.0F + (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
         worldObj.spawnParticle("hugeexplosion", explosionX, explosionY, explosionZ, 0.0D, 0.0D, 0.0D);
+        
         ArrayList arraylist = new ArrayList();
         arraylist.addAll(destroyedBlockPositions);
-
+        
+        // Destroy blocks
         for (int i = arraylist.size() - 1; i >= 0; i--)
         {
             ChunkPosition chunkposition = (ChunkPosition)arraylist.get(i);
             int k = chunkposition.x;
             int i1 = chunkposition.y;
             int k1 = chunkposition.z;
-            int i2 = worldObj.getBlockId(k, i1, k1);
+            int blockID = worldObj.getBlockId(k, i1, k1);
 
             if (par1)
             {
@@ -172,14 +203,14 @@ public class Explosion
                 worldObj.spawnParticle("smoke", d, d1, d2, d3, d4, d5);
             }
 
-            if (i2 > 0)
+            if (blockID > 0)
             {
-                Block.blocksList[i2].dropBlockAsItemWithChance(worldObj, k, i1, k1, worldObj.getBlockMetadata(k, i1, k1), 0.3F, 0);
+                Block.blocksList[blockID].dropBlockAsItemWithChance(worldObj, k, i1, k1, worldObj.getBlockMetadata(k, i1, k1), 0.3F, 0);
                 worldObj.setBlockWithNotify(k, i1, k1, 0);
-                Block.blocksList[i2].onBlockDestroyedByExplosion(worldObj, k, i1, k1);
+                Block.blocksList[blockID].onBlockDestroyedByExplosion(worldObj, k, i1, k1);
             }
         }
-
+        
         if (isFlaming)
         {
             for (int j = arraylist.size() - 1; j >= 0; j--)

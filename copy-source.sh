@@ -12,7 +12,7 @@ else
         # Dictates whether minecraft single player or multi-player (or even other)
         version=$1
     
-        mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
+        mcpDir="/media/MyBook/Games/Minecraft/Modding/mcp62"
 
         # By default, all classes should be in the package "net.minecraft.src.*"        
         #mcpSrcDir="$mcpDir/src/$version"

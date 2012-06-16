@@ -8,8 +8,8 @@ else
     #Aliases for clarity
     projectName=$1 #relative
     
-    mcpDir="/media/My_Book/Games/Minecraft/Modding/mcp62"
-    curDir="/media/My_Book/Programming/GIT/Projects/Minecraft-Mods-and-Patches"
+    mcpDir="/media/MyBook/Games/Minecraft/Modding/mcp62"
+    curDir="/media/MyBook/Programming/GIT/Projects/Minecraft-Mods-and-Patches"
     
     #if [ $2 == "-r" ]; then
     if [ $# -ge 2 ]; then #just check for ANYTHING in parameter 2 as a temporary fix

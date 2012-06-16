@@ -15,4 +15,10 @@ public class BlockOreStorage extends Block
     {
         return blockIndexInTexture;
     }
+    
+    @Override
+    public float getExplosionResistance(Entity par1Entity) 
+    {
+    	return 100;
+    }
 }

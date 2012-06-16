@@ -372,6 +372,13 @@ public class BlockDoor extends Block
             return Item.doorWood.shiftedIndex;
         }
     }
+    
+    @Override
+    public float getExplosionResistance(Entity par1Entity) 
+    {
+    	// Increased explosion resistance on iron doors only
+    	return (blockMaterial == Material.iron) ? 100 : super.getExplosionResistance(par1Entity);
+    }
 
     /**
      * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,

@@ -5,10 +5,21 @@
     http://iqandreas.github.com/minecraft
 ----------------------------------------------------------------
 
-    Adjustable Anaglyph patch BETA v1.2.5-02
+    Adjustable Anaglyph patch v1.2.5-beta-03
     For MineCraft 1.2.5 (will not work with older or newer versions)
 
-This MineCraft patch allows you to adjust the anaglyph setting. There are two sliders available, both adjust different properties. Test around and see what works for you.
+This MineCraft patch allows you to adjust the anaglyph settings. 
+
+You can change the anaglyph mode to one of these colors:
+ - RED/CYAN (Default)
+ - Trioscopic (GREEN/MAGENTA)
+ - ColorCode 3D (AMBER/DARK BLUE)
+ - RED/GREEN
+ - RED/BLUE
+
+For tweaking the anaglyph strength, there are two sliders available, both adjust different properties. Test around and see what works for you.
+
+The patch is still in Beta, so any input, feedback, and bug reports are greatly appreciated.
 
 
     THIS IS A PATCH, NOT A MOD

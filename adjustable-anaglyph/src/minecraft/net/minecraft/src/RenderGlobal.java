@@ -612,7 +612,7 @@ public class RenderGlobal implements IWorldAccess
         RenderHelper.disableStandardItemLighting();
         int j = 0;
 
-        if (occlusionEnabled && mc.gameSettings.advancedOpengl && !mc.gameSettings.anaglyphEnabled() && par2 == 0)
+        if (occlusionEnabled && mc.gameSettings.advancedOpengl && !mc.gameSettings.anaglyph && par2 == 0)
         {
             int k = 0;
             int l = 16;
@@ -703,16 +703,9 @@ public class RenderGlobal implements IWorldAccess
 
                 GL11.glPopMatrix();
 
-                if (mc.gameSettings.anaglyphEnabled())
+                if (mc.gameSettings.anaglyph)
                 {
-                    if (EntityRenderer.anaglyphField == 0)
-                    {
-                        GL11.glColorMask(false, true, true, true);
-                    }
-                    else
-                    {
-                        GL11.glColorMask(true, false, false, true);
-                    }
+                	mc.gameSettings.getAnaglyphMode().applyToGL11(EntityRenderer.anaglyphField, true);
                 }
                 else
                 {
@@ -936,7 +929,7 @@ public class RenderGlobal implements IWorldAccess
         float f1 = (float)vec3d.yCoord;
         float f2 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
             float f3 = (f * 30F + f1 * 59F + f2 * 11F) / 100F;
             float f4 = (f * 30F + f1 * 70F) / 100F;
@@ -971,7 +964,7 @@ public class RenderGlobal implements IWorldAccess
             float f8 = af[1];
             float f11 = af[2];
 
-            if (mc.gameSettings.anaglyphEnabled())
+            if (mc.gameSettings.anaglyph)
             {
                 float f14 = (f6 * 30F + f8 * 59F + f11 * 11F) / 100F;
                 float f17 = (f6 * 30F + f8 * 70F) / 100F;
@@ -1130,7 +1123,7 @@ public class RenderGlobal implements IWorldAccess
         float f2 = (float)vec3d.yCoord;
         float f3 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
             float f4 = (f1 * 30F + f2 * 59F + f3 * 11F) / 100F;
             float f6 = (f1 * 30F + f2 * 70F) / 100F;
@@ -1202,7 +1195,7 @@ public class RenderGlobal implements IWorldAccess
         float f5 = (float)vec3d.yCoord;
         float f6 = (float)vec3d.zCoord;
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
             float f7 = (f4 * 30F + f5 * 59F + f6 * 11F) / 100F;
             float f9 = (f4 * 30F + f5 * 70F) / 100F;
@@ -1230,16 +1223,9 @@ public class RenderGlobal implements IWorldAccess
             {
                 GL11.glColorMask(false, false, false, false);
             }
-            else if (mc.gameSettings.anaglyphEnabled())
+            else if (mc.gameSettings.anaglyph)
             {
-                if (EntityRenderer.anaglyphField == 0)
-                {
-                    GL11.glColorMask(false, true, true, true);
-                }
-                else
-                {
-                    GL11.glColorMask(true, false, false, true);
-                }
+            	mc.gameSettings.getAnaglyphMode().applyToGL11(EntityRenderer.anaglyphField, true);
             }
             else
             {
@@ -1782,7 +1768,7 @@ public class RenderGlobal implements IWorldAccess
     }
 
     /**
-     * Plays the specified sound. Arg: x, y, z, soundName, unknown1, unknown2
+     * Plays the specified sound. Arg: soundName, x, y, z, volume, pitch
      */
     public void playSound(String par1Str, double par2, double par4, double par6, float par8, float par9)
     {
@@ -1875,7 +1861,7 @@ public class RenderGlobal implements IWorldAccess
         else if (par1Str.equals("magicCrit"))
         {
             obj = new EntityCritFX(worldObj, par2, par4, par6, par8, par10, par12);
-            ((EntityFX)(obj)).func_40097_b(((EntityFX)(obj)).func_40098_n() * 0.3F, ((EntityFX)(obj)).func_40101_o() * 0.8F, ((EntityFX)(obj)).func_40102_p());
+            ((EntityFX)(obj)).setRBGColorF(((EntityFX)(obj)).getRedColorF() * 0.3F, ((EntityFX)(obj)).getGreenColorF() * 0.8F, ((EntityFX)(obj)).getBlueColorF());
             ((EntityFX)(obj)).setParticleTextureIndex(((EntityFX)(obj)).getParticleTextureIndex() + 1);
         }
         else if (par1Str.equals("smoke"))
@@ -1885,7 +1871,7 @@ public class RenderGlobal implements IWorldAccess
         else if (par1Str.equals("mobSpell"))
         {
             obj = new EntitySpellParticleFX(worldObj, par2, par4, par6, 0.0D, 0.0D, 0.0D);
-            ((EntityFX)(obj)).func_40097_b((float)par8, (float)par10, (float)par12);
+            ((EntityFX)(obj)).setRBGColorF((float)par8, (float)par10, (float)par12);
         }
         else if (par1Str.equals("spell"))
         {
@@ -2127,7 +2113,7 @@ public class RenderGlobal implements IWorldAccess
                     if (entityfx != null)
                     {
                         float f3 = 0.75F + random.nextFloat() * 0.25F;
-                        entityfx.func_40097_b(f * f3, f1 * f3, f2 * f3);
+                        entityfx.setRBGColorF(f * f3, f1 * f3, f2 * f3);
                         entityfx.multiplyVelocity((float)d16);
                     }
                 }

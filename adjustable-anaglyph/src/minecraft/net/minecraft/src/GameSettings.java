@@ -26,30 +26,51 @@ public class GameSettings
     {
         "performance.max", "performance.balanced", "performance.powersaver"
     };
+    private static final String ANAGLYPH_MODES[] = AnaglyphMode.getModes();
+    
     public float musicVolume;
     public float soundVolume;
     public float mouseSensitivity;
     public boolean invertMouse;
     public int renderDistance;
     public boolean viewBobbing;
-    private float anaglyph1;
-    private float anaglyph2;
-
-    public boolean anaglyphEnabled()
+    
+    public boolean anaglyph; // Keep for reverse compatibility
+    private AnaglyphMode anaglyphMode;
+    private float anaglyphStrength1;
+    private float anaglyphStrength2;
+    
+    public AnaglyphMode getAnaglyphMode()
     {
-    	return (boolean)((anaglyph1 > 0) && (anaglyph2 > 0));
+    	return anaglyphMode;
     }
     
-    public float getAnaglyph1Offset()
+    public void setAnaglyphMode(int id)
     {
-    	//System.out.println(anaglyph1);
-    	return anaglyph1 * 0.1F;
+    	this.setAnaglyphMode(AnaglyphMode.getByID(id));
     }
     
-    public float getAnaglyph2Offset()
+    public void setAnaglyphMode(AnaglyphMode value)
     {
-    	//System.out.println(anaglyph2);
-    	return anaglyph2 * 0.1F * 2;
+    	anaglyphMode = (value != null) ? value : AnaglyphMode.OFF;
+    	anaglyph = (boolean)(anaglyphMode != AnaglyphMode.OFF);
+    	mc.renderEngine.refreshTextures();
+    }
+    
+    public float getAnaglyphStrength1()
+    {
+    	// This allows the setting to go between 0 and double the default value
+    	// 0 means the default value is used
+    	final float defaultValue = 0.07F;
+    	return (anaglyphStrength1 == 0.0F) ? defaultValue : anaglyphStrength1 * defaultValue * 2;
+    }
+    
+    public float getAnaglyphStrength2()
+    {
+    	// This allows the setting to go between 0 and double the default value
+    	// 0 means the default value is used
+    	final float defaultValue = 0.1F;
+    	return (anaglyphStrength2 == 0.0F) ? defaultValue : anaglyphStrength2 * defaultValue * 2;
     }
     
     /** Advanced OpenGL */
@@ -124,8 +145,12 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph1 = 0.0F;
-        anaglyph2 = 0.0F;
+        
+        anaglyph = false;
+        anaglyphMode = AnaglyphMode.OFF;
+        anaglyphStrength1 = 0.5F;
+        anaglyphStrength2 = 0.5F;
+        
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -179,8 +204,12 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
-        anaglyph1 = 0.0F;
-        anaglyph2 = 0.0F;
+        
+        anaglyph = false;
+        anaglyphMode = AnaglyphMode.OFF;
+        anaglyphStrength1 = 0.5F;
+        anaglyphStrength2 = 0.5F;
+        
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
@@ -297,16 +326,16 @@ public class GameSettings
             gammaSetting = par2;
         }
         
-        if (par1EnumOptions == EnumOptions.ANAGLYPH1)
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1)
         {
-        	anaglyph1 = par2;
-        	mc.renderEngine.refreshTextures();
+        	// Only set the value if anaglyph mode is enabled.
+        	if (anaglyph) { anaglyphStrength1 = par2; }
         }
         
-        if (par1EnumOptions == EnumOptions.ANAGLYPH2)
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2)
         {
-        	anaglyph2 = par2;
-        	mc.renderEngine.refreshTextures();
+        	// Only set the value if anaglyph mode is enabled.
+        	if (anaglyph) { anaglyphStrength2 = par2; }
         }
     }
 
@@ -323,6 +352,11 @@ public class GameSettings
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE)
         {
             renderDistance = renderDistance + par2 & 3;
+        }
+
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_MODE)
+        {
+            this.setAnaglyphMode(anaglyphMode.getNext(par2));
         }
 
         if (par1EnumOptions == EnumOptions.GUI_SCALE)
@@ -398,14 +432,14 @@ public class GameSettings
             return soundVolume;
         }
 
-        if (par1EnumOptions == EnumOptions.ANAGLYPH1)
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1)
         {
-        	return anaglyph1;
+        	return anaglyphStrength1;
         }
         
-        if (par1EnumOptions == EnumOptions.ANAGLYPH2)
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2)
         {
-        	return anaglyph2;
+        	return anaglyphStrength2;
         }
 
         if (par1EnumOptions == EnumOptions.SENSITIVITY)
@@ -517,6 +551,22 @@ public class GameSettings
                     return (new StringBuilder()).append(s).append("+").append((int)(f * 100F)).append("%").toString();
                 }
             }
+            
+            if ((par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1) || (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2))
+            {
+            	if (!anaglyph)
+            	{
+            		return (new StringBuilder()).append(s).append("DISABLED").toString();
+            	}
+            	else if (f == 0.0F)
+                {
+                    return (new StringBuilder()).append(s).append("DEFAULT").toString();
+                }
+                else
+                {
+                    return (new StringBuilder()).append(s).append((int)(f * 100F)).append("%").toString();
+                }
+            }
 
             if (f == 0.0F)
             {
@@ -545,6 +595,11 @@ public class GameSettings
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE)
         {
             return (new StringBuilder()).append(s).append(func_48571_a(RENDER_DISTANCES, renderDistance)).toString();
+        }
+
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_MODE)
+        {
+            return (new StringBuilder()).append(s).append(anaglyphMode.name).toString();
         }
 
         if (par1EnumOptions == EnumOptions.DIFFICULTY)
@@ -654,14 +709,19 @@ public class GameSettings
                         viewBobbing = as[1].equals("true");
                     }
 
-                    if (as[0].equals("anaglyph3d"))
+                    if (as[0].equals("anaglyphMode"))
                     {
-                        anaglyph1 = parseFloat(as[1]);
+                        this.setAnaglyphMode(Integer.parseInt(as[1]));
                     }
 
-                    if (as[0].equals("anaglyph3d2"))
+                    if (as[0].equals("anaglyphStrength1"))
                     {
-                        anaglyph2 = parseFloat(as[1]);
+                        anaglyphStrength1 = parseFloat(as[1]);
+                    }
+
+                    if (as[0].equals("anaglyphStrength2"))
+                    {
+                        anaglyphStrength2 = parseFloat(as[1]);
                     }
 
                     if (as[0].equals("advancedOpengl"))
@@ -775,8 +835,9 @@ public class GameSettings
             printwriter.println((new StringBuilder()).append("guiScale:").append(guiScale).toString());
             printwriter.println((new StringBuilder()).append("particles:").append(particleSetting).toString());
             printwriter.println((new StringBuilder()).append("bobView:").append(viewBobbing).toString());
-            printwriter.println((new StringBuilder()).append("anaglyph3d:").append(anaglyph1).toString());
-            printwriter.println((new StringBuilder()).append("anaglyph3d2:").append(anaglyph2).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphMode:").append(anaglyphMode.id).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphStrength1:").append(anaglyphStrength1).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphStrength2:").append(anaglyphStrength2).toString());
             printwriter.println((new StringBuilder()).append("advancedOpengl:").append(advancedOpengl).toString());
             printwriter.println((new StringBuilder()).append("fpsLimit:").append(limitFramerate).toString());
             printwriter.println((new StringBuilder()).append("difficulty:").append(difficulty).toString());

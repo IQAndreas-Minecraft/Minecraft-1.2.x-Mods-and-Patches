@@ -533,11 +533,9 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
-            //TODO:
-            //float f = 0.07F;
-            float f = mc.gameSettings.getAnaglyph1Offset();
+            float f = mc.gameSettings.getAnaglyphStrength1();
             GL11.glTranslatef((float)(-(anaglyphFieldID * 2 - 1)) * f, 0.0F, 0.0F);
         }
 
@@ -558,11 +556,9 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
-        	//TODO
-        	//float f2 = 0.1F
-        	float f2 = mc.gameSettings.getAnaglyph2Offset();
+        	float f2 = mc.gameSettings.getAnaglyphStrength2();
             GL11.glTranslatef((float)(anaglyphFieldID * 2 - 1) * f2, 0.0F, 0.0F);
         }
 
@@ -637,11 +633,9 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
-            //TODO
-            //float f = 0.07F;
-            float f = mc.gameSettings.getAnaglyph1Offset();
+            float f = mc.gameSettings.getAnaglyphStrength1();
             GL11.glTranslatef((float)(-(par2 * 2 - 1)) * f, 0.0F, 0.0F);
         }
 
@@ -662,11 +656,9 @@ public class EntityRenderer
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
-        	//TODO
-        	//float f2 = 0.1F;
-        	float f2 = mc.gameSettings.getAnaglyph2Offset();
+        	float f2 = mc.gameSettings.getAnaglyphStrength2();
             GL11.glTranslatef((float)(par2 * 2 - 1) * f2, 0.0F, 0.0F);
         }
 
@@ -922,7 +914,7 @@ public class EntityRenderer
             return;
         }
 
-        anaglyphEnable = mc.gameSettings.anaglyphEnabled();
+        anaglyphEnable = mc.gameSettings.anaglyph;
         ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         int i = scaledresolution.getScaledWidth();
         int j = scaledresolution.getScaledHeight();
@@ -1062,20 +1054,12 @@ public class EntityRenderer
 
         for (int i = 0; i < 2; i++)
         {
-            if (mc.gameSettings.anaglyphEnabled())
+            if (mc.gameSettings.anaglyph)
             {
                 anaglyphField = i;
-
-                if (anaglyphField == 0)
-                {
-                    GL11.glColorMask(false, true, true, false);
-                }
-                else
-                {
-                    GL11.glColorMask(true, false, false, false);
-                }
+                mc.gameSettings.getAnaglyphMode().applyToGL11(anaglyphField, false);
             }
-
+        	
             Profiler.endStartSection("clear");
             GL11.glViewport(0, 0, mc.displayWidth, mc.displayHeight);
             updateFogColor(par1);
@@ -1178,22 +1162,14 @@ public class EntityRenderer
                 GL11.glColorMask(false, false, false, false);
                 int i1 = renderglobal.sortAndRender(entityliving, 1, par1);
 
-                if (mc.gameSettings.anaglyphEnabled())
+                if (mc.gameSettings.anaglyph)
                 {
-                    if (anaglyphField == 0)
-                    {
-                        GL11.glColorMask(false, true, true, true);
-                    }
-                    else
-                    {
-                        GL11.glColorMask(true, false, false, true);
-                    }
+                	mc.gameSettings.getAnaglyphMode().applyToGL11(anaglyphField, true);
                 }
                 else
                 {
                     GL11.glColorMask(true, true, true, true);
                 }
-
                 if (i1 > 0)
                 {
                     renderglobal.renderAllRenderLists(1, par1);
@@ -1247,7 +1223,7 @@ public class EntityRenderer
                 renderHand(par1, i);
             }
 
-            if (!mc.gameSettings.anaglyphEnabled())
+            if (!mc.gameSettings.anaglyph)
             {
                 Profiler.endSection();
                 return;
@@ -1255,6 +1231,7 @@ public class EntityRenderer
         }
 
         GL11.glColorMask(true, true, true, false);
+
         Profiler.endSection();
     }
 
@@ -1664,7 +1641,7 @@ public class EntityRenderer
             fogColorBlue *= d;
         }
 
-        if (mc.gameSettings.anaglyphEnabled())
+        if (mc.gameSettings.anaglyph)
         {
             float f11 = (fogColorRed * 30F + fogColorGreen * 59F + fogColorBlue * 11F) / 100F;
             float f12 = (fogColorRed * 30F + fogColorGreen * 70F) / 100F;
@@ -1748,7 +1725,7 @@ public class EntityRenderer
             float f5 = 1.0F;
             float f8 = 1.0F;
 
-            if (mc.gameSettings.anaglyphEnabled())
+            if (mc.gameSettings.anaglyph)
             {
                 float f11 = (f1 * 30F + f5 * 59F + f8 * 11F) / 100F;
                 float f15 = (f1 * 30F + f5 * 70F) / 100F;
@@ -1775,7 +1752,7 @@ public class EntityRenderer
             float f6 = 0.4F;
             float f9 = 0.9F;
 
-            if (mc.gameSettings.anaglyphEnabled())
+            if (mc.gameSettings.anaglyph)
             {
                 float f12 = (f2 * 30F + f6 * 59F + f9 * 11F) / 100F;
                 float f16 = (f2 * 30F + f6 * 70F) / 100F;
@@ -1793,7 +1770,7 @@ public class EntityRenderer
             float f7 = 0.3F;
             float f10 = 0.3F;
 
-            if (mc.gameSettings.anaglyphEnabled())
+            if (mc.gameSettings.anaglyph)
             {
                 float f13 = (f3 * 30F + f7 * 59F + f10 * 11F) / 100F;
                 float f17 = (f3 * 30F + f7 * 70F) / 100F;

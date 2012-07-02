@@ -18,10 +18,6 @@ public class GameSettings
     {
         "options.guiScale.auto", "options.guiScale.small", "options.guiScale.normal", "options.guiScale.large"
     };
-    private static final String field_55387_ab[] =
-    {
-        "options.chat.visibility.full", "options.chat.visibility.system", "options.chat.visibility.hidden"
-    };
     private static final String PARTICLES[] =
     {
         "options.particles.all", "options.particles.decreased", "options.particles.minimal"
@@ -30,14 +26,53 @@ public class GameSettings
     {
         "performance.max", "performance.balanced", "performance.powersaver"
     };
+    private static final String ANAGLYPH_MODES[] = AnaglyphMode.getModes();
+    
     public float musicVolume;
     public float soundVolume;
     public float mouseSensitivity;
     public boolean invertMouse;
     public int renderDistance;
     public boolean viewBobbing;
-    public boolean anaglyph;
-
+    
+    public boolean anaglyph; // Keep for reverse compatibility
+    private AnaglyphMode anaglyphMode;
+    private float anaglyphStrength1;
+    private float anaglyphStrength2;
+    
+    public AnaglyphMode getAnaglyphMode()
+    {
+    	return anaglyphMode;
+    }
+    
+    public void setAnaglyphMode(int id)
+    {
+    	this.setAnaglyphMode(AnaglyphMode.getByID(id));
+    }
+    
+    public void setAnaglyphMode(AnaglyphMode value)
+    {
+    	anaglyphMode = (value != null) ? value : AnaglyphMode.OFF;
+    	anaglyph = (boolean)(anaglyphMode != AnaglyphMode.OFF);
+    	mc.renderEngine.refreshTextures();
+    }
+    
+    public float getAnaglyphStrength1()
+    {
+    	// This allows the setting to go between 0 and double the default value
+    	// 0 means the default value is used
+    	final float defaultValue = 0.07F;
+    	return (anaglyphStrength1 == 0.0F) ? defaultValue : anaglyphStrength1 * defaultValue * 2;
+    }
+    
+    public float getAnaglyphStrength2()
+    {
+    	// This allows the setting to go between 0 and double the default value
+    	// 0 means the default value is used
+    	final float defaultValue = 0.1F;
+    	return (anaglyphStrength2 == 0.0F) ? defaultValue : anaglyphStrength2 * defaultValue * 2;
+    }
+    
     /** Advanced OpenGL */
     public boolean advancedOpengl;
     public int limitFramerate;
@@ -51,12 +86,6 @@ public class GameSettings
 
     /** The name of the selected texture pack. */
     public String skin;
-    public int field_55382_n;
-    public boolean field_55383_o;
-    public boolean field_55386_p;
-    public boolean field_55385_q;
-    public float field_55384_r;
-    public boolean field_57427_s;
     public KeyBinding keyBindForward;
     public KeyBinding keyBindLeft;
     public KeyBinding keyBindBack;
@@ -70,7 +99,6 @@ public class GameSettings
     public KeyBinding keyBindUseItem;
     public KeyBinding keyBindPlayerList;
     public KeyBinding keyBindPickBlock;
-    public KeyBinding field_55381_F;
     public KeyBinding keyBindings[];
     protected Minecraft mc;
     private File optionsFile;
@@ -117,19 +145,18 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
+        
         anaglyph = false;
+        anaglyphMode = AnaglyphMode.OFF;
+        anaglyphStrength1 = 0.5F;
+        anaglyphStrength2 = 0.5F;
+        
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
         ambientOcclusion = true;
         clouds = true;
         skin = "Default";
-        field_55382_n = 0;
-        field_55383_o = true;
-        field_55386_p = true;
-        field_55385_q = true;
-        field_55384_r = 1.0F;
-        field_57427_s = true;
         keyBindForward = new KeyBinding("key.forward", 17);
         keyBindLeft = new KeyBinding("key.left", 30);
         keyBindBack = new KeyBinding("key.back", 31);
@@ -143,11 +170,10 @@ public class GameSettings
         keyBindUseItem = new KeyBinding("key.use", -99);
         keyBindPlayerList = new KeyBinding("key.playerlist", 15);
         keyBindPickBlock = new KeyBinding("key.pickItem", -98);
-        field_55381_F = new KeyBinding("key.command", 53);
         keyBindings = (new KeyBinding[]
                 {
                     keyBindAttack, keyBindUseItem, keyBindForward, keyBindLeft, keyBindBack, keyBindRight, keyBindJump, keyBindSneak, keyBindDrop, keyBindInventory,
-                    keyBindChat, keyBindPlayerList, keyBindPickBlock, field_55381_F
+                    keyBindChat, keyBindPlayerList, keyBindPickBlock
                 });
         difficulty = 2;
         hideGUI = false;
@@ -178,19 +204,18 @@ public class GameSettings
         invertMouse = false;
         renderDistance = 0;
         viewBobbing = true;
+        
         anaglyph = false;
+        anaglyphMode = AnaglyphMode.OFF;
+        anaglyphStrength1 = 0.5F;
+        anaglyphStrength2 = 0.5F;
+        
         advancedOpengl = false;
         limitFramerate = 1;
         fancyGraphics = true;
         ambientOcclusion = true;
         clouds = true;
         skin = "Default";
-        field_55382_n = 0;
-        field_55383_o = true;
-        field_55386_p = true;
-        field_55385_q = true;
-        field_55384_r = 1.0F;
-        field_57427_s = true;
         keyBindForward = new KeyBinding("key.forward", 17);
         keyBindLeft = new KeyBinding("key.left", 30);
         keyBindBack = new KeyBinding("key.back", 31);
@@ -204,11 +229,10 @@ public class GameSettings
         keyBindUseItem = new KeyBinding("key.use", -99);
         keyBindPlayerList = new KeyBinding("key.playerlist", 15);
         keyBindPickBlock = new KeyBinding("key.pickItem", -98);
-        field_55381_F = new KeyBinding("key.command", 53);
         keyBindings = (new KeyBinding[]
                 {
                     keyBindAttack, keyBindUseItem, keyBindForward, keyBindLeft, keyBindBack, keyBindRight, keyBindJump, keyBindSneak, keyBindDrop, keyBindInventory,
-                    keyBindChat, keyBindPlayerList, keyBindPickBlock, field_55381_F
+                    keyBindChat, keyBindPlayerList, keyBindPickBlock
                 });
         difficulty = 2;
         hideGUI = false;
@@ -301,10 +325,17 @@ public class GameSettings
         {
             gammaSetting = par2;
         }
-
-        if (par1EnumOptions == EnumOptions.CHAT_OPACITY)
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1)
         {
-            field_55384_r = par2;
+        	// Only set the value if anaglyph mode is enabled.
+        	if (anaglyph) { anaglyphStrength1 = par2; }
+        }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2)
+        {
+        	// Only set the value if anaglyph mode is enabled.
+        	if (anaglyph) { anaglyphStrength2 = par2; }
         }
     }
 
@@ -321,6 +352,11 @@ public class GameSettings
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE)
         {
             renderDistance = renderDistance + par2 & 3;
+        }
+
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_MODE)
+        {
+            this.setAnaglyphMode(anaglyphMode.getNext(par2));
         }
 
         if (par1EnumOptions == EnumOptions.GUI_SCALE)
@@ -349,12 +385,6 @@ public class GameSettings
             mc.renderGlobal.loadRenderers();
         }
 
-        if (par1EnumOptions == EnumOptions.ANAGLYPH)
-        {
-            anaglyph = !anaglyph;
-            mc.renderEngine.refreshTextures();
-        }
-
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT)
         {
             limitFramerate = (limitFramerate + par2 + 3) % 3;
@@ -375,31 +405,6 @@ public class GameSettings
         {
             ambientOcclusion = !ambientOcclusion;
             mc.renderGlobal.loadRenderers();
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_VISIBILITY)
-        {
-            field_55382_n = (field_55382_n + par2) % 3;
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_COLOR)
-        {
-            field_55383_o = !field_55383_o;
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_LINKS)
-        {
-            field_55386_p = !field_55386_p;
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_LINKS_PROMPT)
-        {
-            field_55385_q = !field_55385_q;
-        }
-
-        if (par1EnumOptions == EnumOptions.USE_SERVER_TEXTURES)
-        {
-            field_57427_s = !field_57427_s;
         }
 
         saveOptions();
@@ -427,14 +432,19 @@ public class GameSettings
             return soundVolume;
         }
 
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1)
+        {
+        	return anaglyphStrength1;
+        }
+        
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2)
+        {
+        	return anaglyphStrength2;
+        }
+
         if (par1EnumOptions == EnumOptions.SENSITIVITY)
         {
             return mouseSensitivity;
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_OPACITY)
-        {
-            return field_55384_r;
         }
         else
         {
@@ -444,7 +454,7 @@ public class GameSettings
 
     public boolean getOptionOrdinalValue(EnumOptions par1EnumOptions)
     {
-        switch (EnumOptionsHelper.enumOptionsMappingHelperArray[par1EnumOptions.ordinal()])
+        switch (EnumOptionsMappingHelper.enumOptionsMappingHelperArray[par1EnumOptions.ordinal()])
         {
             case 1:
                 return invertMouse;
@@ -452,8 +462,8 @@ public class GameSettings
             case 2:
                 return viewBobbing;
 
-            case 3:
-                return anaglyph;
+            //case 3:
+            //    return anaglyph;
 
             case 4:
                 return advancedOpengl;
@@ -463,18 +473,6 @@ public class GameSettings
 
             case 6:
                 return clouds;
-
-            case 7:
-                return field_55383_o;
-
-            case 8:
-                return field_55386_p;
-
-            case 9:
-                return field_55385_q;
-
-            case 10:
-                return field_57427_s;
         }
 
         return false;
@@ -553,10 +551,21 @@ public class GameSettings
                     return (new StringBuilder()).append(s).append("+").append((int)(f * 100F)).append("%").toString();
                 }
             }
-
-            if (par1EnumOptions == EnumOptions.CHAT_OPACITY)
+            
+            if ((par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_1) || (par1EnumOptions == EnumOptions.ANAGLYPH_STRENGTH_2))
             {
-                return (new StringBuilder()).append(s).append((int)(f * 90F + 10F)).append("%").toString();
+            	if (!anaglyph)
+            	{
+            		return (new StringBuilder()).append(s).append("DISABLED").toString();
+            	}
+            	else if (f == 0.0F)
+                {
+                    return (new StringBuilder()).append(s).append("DEFAULT").toString();
+                }
+                else
+                {
+                    return (new StringBuilder()).append(s).append((int)(f * 100F)).append("%").toString();
+                }
             }
 
             if (f == 0.0F)
@@ -588,6 +597,11 @@ public class GameSettings
             return (new StringBuilder()).append(s).append(func_48571_a(RENDER_DISTANCES, renderDistance)).toString();
         }
 
+        if (par1EnumOptions == EnumOptions.ANAGLYPH_MODE)
+        {
+            return (new StringBuilder()).append(s).append(anaglyphMode.name).toString();
+        }
+
         if (par1EnumOptions == EnumOptions.DIFFICULTY)
         {
             return (new StringBuilder()).append(s).append(func_48571_a(DIFFICULTIES, difficulty)).toString();
@@ -596,11 +610,6 @@ public class GameSettings
         if (par1EnumOptions == EnumOptions.GUI_SCALE)
         {
             return (new StringBuilder()).append(s).append(func_48571_a(GUISCALES, guiScale)).toString();
-        }
-
-        if (par1EnumOptions == EnumOptions.CHAT_VISIBILITY)
-        {
-            return (new StringBuilder()).append(s).append(func_48571_a(field_55387_ab, field_55382_n)).toString();
         }
 
         if (par1EnumOptions == EnumOptions.PARTICLES)
@@ -700,9 +709,19 @@ public class GameSettings
                         viewBobbing = as[1].equals("true");
                     }
 
-                    if (as[0].equals("anaglyph3d"))
+                    if (as[0].equals("anaglyphMode"))
                     {
-                        anaglyph = as[1].equals("true");
+                        this.setAnaglyphMode(Integer.parseInt(as[1]));
+                    }
+
+                    if (as[0].equals("anaglyphStrength1"))
+                    {
+                        anaglyphStrength1 = parseFloat(as[1]);
+                    }
+
+                    if (as[0].equals("anaglyphStrength2"))
+                    {
+                        anaglyphStrength2 = parseFloat(as[1]);
                     }
 
                     if (as[0].equals("advancedOpengl"))
@@ -750,50 +769,16 @@ public class GameSettings
                         language = as[1];
                     }
 
-                    if (as[0].equals("chatVisibility"))
+                    int i = 0;
+
+                    while (i < keyBindings.length)
                     {
-                        field_55382_n = Integer.parseInt(as[1]);
-                    }
-
-                    if (as[0].equals("chatColors"))
-                    {
-                        field_55383_o = as[1].equals("true");
-                    }
-
-                    if (as[0].equals("chatLinks"))
-                    {
-                        field_55386_p = as[1].equals("true");
-                    }
-
-                    if (as[0].equals("chatLinksPrompt"))
-                    {
-                        field_55385_q = as[1].equals("true");
-                    }
-
-                    if (as[0].equals("chatOpacity"))
-                    {
-                        field_55384_r = parseFloat(as[1]);
-                    }
-
-                    if (as[0].equals("serverTextures"))
-                    {
-                        field_57427_s = as[1].equals("true");
-                    }
-
-                    KeyBinding akeybinding[] = keyBindings;
-                    int i = akeybinding.length;
-                    int j = 0;
-
-                    while (j < i)
-                    {
-                        KeyBinding keybinding = akeybinding[j];
-
-                        if (as[0].equals((new StringBuilder()).append("key_").append(keybinding.keyDescription).toString()))
+                        if (as[0].equals((new StringBuilder()).append("key_").append(keyBindings[i].keyDescription).toString()))
                         {
-                            keybinding.keyCode = Integer.parseInt(as[1]);
+                            keyBindings[i].keyCode = Integer.parseInt(as[1]);
                         }
 
-                        j++;
+                        i++;
                     }
                 }
                 catch (Exception exception1)
@@ -850,7 +835,9 @@ public class GameSettings
             printwriter.println((new StringBuilder()).append("guiScale:").append(guiScale).toString());
             printwriter.println((new StringBuilder()).append("particles:").append(particleSetting).toString());
             printwriter.println((new StringBuilder()).append("bobView:").append(viewBobbing).toString());
-            printwriter.println((new StringBuilder()).append("anaglyph3d:").append(anaglyph).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphMode:").append(anaglyphMode.id).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphStrength1:").append(anaglyphStrength1).toString());
+            printwriter.println((new StringBuilder()).append("anaglyphStrength2:").append(anaglyphStrength2).toString());
             printwriter.println((new StringBuilder()).append("advancedOpengl:").append(advancedOpengl).toString());
             printwriter.println((new StringBuilder()).append("fpsLimit:").append(limitFramerate).toString());
             printwriter.println((new StringBuilder()).append("difficulty:").append(difficulty).toString());
@@ -860,19 +847,10 @@ public class GameSettings
             printwriter.println((new StringBuilder()).append("skin:").append(skin).toString());
             printwriter.println((new StringBuilder()).append("lastServer:").append(lastServer).toString());
             printwriter.println((new StringBuilder()).append("lang:").append(language).toString());
-            printwriter.println((new StringBuilder()).append("chatVisibility:").append(field_55382_n).toString());
-            printwriter.println((new StringBuilder()).append("chatColors:").append(field_55383_o).toString());
-            printwriter.println((new StringBuilder()).append("chatLinks:").append(field_55386_p).toString());
-            printwriter.println((new StringBuilder()).append("chatLinksPrompt:").append(field_55385_q).toString());
-            printwriter.println((new StringBuilder()).append("chatOpacity:").append(field_55384_r).toString());
-            printwriter.println((new StringBuilder()).append("serverTextures:").append(field_57427_s).toString());
-            KeyBinding akeybinding[] = keyBindings;
-            int i = akeybinding.length;
 
-            for (int j = 0; j < i; j++)
+            for (int i = 0; i < keyBindings.length; i++)
             {
-                KeyBinding keybinding = akeybinding[j];
-                printwriter.println((new StringBuilder()).append("key_").append(keybinding.keyDescription).append(":").append(keybinding.keyCode).toString());
+                printwriter.println((new StringBuilder()).append("key_").append(keyBindings[i].keyDescription).append(":").append(keyBindings[i].keyCode).toString());
             }
 
             printwriter.close();
@@ -881,11 +859,6 @@ public class GameSettings
         {
             System.out.println("Failed to save options");
             exception.printStackTrace();
-        }
-
-        if (mc.field_56455_h != null)
-        {
-            mc.field_56455_h.sendQueue.addToSendQueue(new Packet204ClientInfo(language, renderDistance, field_55382_n, field_55383_o, difficulty));
         }
     }
 

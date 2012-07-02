@@ -10,7 +10,10 @@ public enum EnumOptions
     GAMMA("options.gamma", true, false),
     RENDER_DISTANCE("options.renderDistance", false, false),
     VIEW_BOBBING("options.viewBobbing", false, true),
-    ANAGLYPH("options.anaglyph", false, true),
+    //ANAGLYPH("options.anaglyph", true, false),
+    ANAGLYPH_MODE("Anaglyph mode", false, false),
+    ANAGLYPH_STRENGTH_1("Anaglyph strength #1", true, false),
+    ANAGLYPH_STRENGTH_2("Anaglyph strength #2", true, false),
     ADVANCED_OPENGL("options.advancedOpengl", false, true),
     FRAMERATE_LIMIT("options.framerateLimit", false, false),
     DIFFICULTY("options.difficulty", false, false),
@@ -18,13 +21,7 @@ public enum EnumOptions
     AMBIENT_OCCLUSION("options.ao", false, true),
     GUI_SCALE("options.guiScale", false, false),
     RENDER_CLOUDS("options.renderClouds", false, true),
-    PARTICLES("options.particles", false, false),
-    CHAT_VISIBILITY("options.chat.visibility", false, false),
-    CHAT_COLOR("options.chat.color", false, true),
-    CHAT_LINKS("options.chat.links", false, true),
-    CHAT_OPACITY("options.chat.opacity", true, false),
-    CHAT_LINKS_PROMPT("options.chat.links.prompt", false, true),
-    USE_SERVER_TEXTURES("options.serverTextures", false, true);
+    PARTICLES("options.particles", false, false);
 
     private final boolean enumFloat;
     private final boolean enumBoolean;

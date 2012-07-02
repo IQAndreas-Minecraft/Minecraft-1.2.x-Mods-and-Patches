@@ -35,20 +35,20 @@ public class GuiVideoSettings extends GuiScreen
         StringTranslate stringtranslate = StringTranslate.getInstance();
         screenTitle = stringtranslate.translateKey("options.videoTitle");
         int i = 0;
-        EnumOptions aobj[] = videoOptions;
+        Object aobj[] = videoOptions;
         int j = aobj.length;
 
         for (int k = 0; k < j; k++)
         {
-            EnumOptions enumoptions = aobj[k];
+            EnumOptions enumoptions = (EnumOptions) aobj[k];
 
-            if (enumoptions.getEnumFloat())
+            if (!enumoptions.getEnumFloat())
             {
-                controlList.add(new GuiSlider(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, guiGameSettings.getKeyBinding(enumoptions), guiGameSettings.getOptionFloatValue(enumoptions)));
+                controlList.add(new GuiSmallButton(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, guiGameSettings.getKeyBinding(enumoptions)));
             }
             else
             {
-                controlList.add(new GuiSmallButton(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, guiGameSettings.getKeyBinding(enumoptions)));
+                controlList.add(new GuiSlider(enumoptions.returnEnumOrdinal(), (width / 2 - 155) + (i % 2) * 160, height / 6 + 24 * (i >> 1), enumoptions, guiGameSettings.getKeyBinding(enumoptions), guiGameSettings.getOptionFloatValue(enumoptions)));
             }
 
             i++;
@@ -56,11 +56,11 @@ public class GuiVideoSettings extends GuiScreen
 
         controlList.add(new GuiButton(200, width / 2 - 100, height / 6 + 168, stringtranslate.translateKey("gui.done")));
         is64bit = false;
-        String[] aobj2 = (new String[]
+        aobj = (new String[]
                 {
                     "sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"
                 });
-        String as[] = ((String [])(aobj2));
+        String as[] = ((String [])(aobj));
         int l = as.length;
         int i1 = 0;
 
@@ -74,7 +74,7 @@ public class GuiVideoSettings extends GuiScreen
             String s = as[i1];
             String s1 = System.getProperty(s);
 
-            if (s1 != null && s1.contains("64"))
+            if (s1 != null && s1.indexOf("64") >= 0)
             {
                 is64bit = true;
                 break;
@@ -139,8 +139,8 @@ public class GuiVideoSettings extends GuiScreen
     {
         videoOptions = (new EnumOptions[]
                 {
-                    EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS,
-                    EnumOptions.PARTICLES, EnumOptions.USE_SERVER_TEXTURES
+                    EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS,
+                    EnumOptions.PARTICLES, EnumOptions.ANAGLYPH_MODE, EnumOptions.ANAGLYPH_STRENGTH_1, EnumOptions.ANAGLYPH_STRENGTH_2
                 });
     }
 }

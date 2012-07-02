@@ -1,0 +1,55 @@
+
+----------------------------------------------------------------
+    Minecraft Mods and Patches
+    Andreas Renberg (IQAndreas)
+    http://iqandreas.github.com/minecraft
+----------------------------------------------------------------
+
+    Adjustable Anaglyph patch v12w26a-beta-03
+    For MineCraft Snapshot 12w26a (will not work with older or newer versions)
+
+This MineCraft patch allows you to adjust the anaglyph settings. 
+
+You can change the anaglyph mode to one of these colors:
+ - RED/CYAN (Default)
+ - Trioscopic (GREEN/MAGENTA)
+ - ColorCode 3D (AMBER/DARK BLUE)
+ - RED/GREEN
+ - RED/BLUE
+
+For tweaking the anaglyph strength, there are two sliders available, both adjust different properties. Test around and see what works for you.
+
+The patch is still in Beta, so any input, feedback, and bug reports are greatly appreciated.
+
+
+    THIS IS A PATCH, NOT A MOD
+
+ - It will not affect your world save
+    No new items or blocks will be added to your maps. This means the mod can be uninstalled, reinstalled, or MineCraft upgraded (causing the patch to automatically uninstall) without any issues.
+    
+ - It is not meant to be compatible with other mods (including ModLoader or other mod APIs)
+    If you want mod compatability, send me all the information about the mod you want this patch to be compatible with. If able, I will contact the mod developer and if they are willing, create a compatible version.
+    
+ - It does not require any mod APIs
+    This patch modifies base classes in the MineCraft source code. No mod APIs are required to use it, nor can it be modified to use a mod API rather than modifying base classes (hooks just won't cut it!).
+
+----------------------------------------------------------------
+
+This mod does not work with with the following mods. If you need mod compatability, contact me for a compatible version.
+ - No More Void Fog! Patch (http://iqandreas.github.com/minecraft/no-more-void-fog/)
+
+See INSTALLATION for full installation instructions.
+
+
+To recommend changes to the source code or request features
+https://github.com/IQAndreas/Minecraft-Mods-and-Patches
+
+Parts of the code owned by Mojang AB (used with permission)
+Parts of the code owned by Andreas Renberg (IQAndreas)
+
+The source is open so fixes can be recommended, but any use of the source or compiled code outside of the project (including using it in other mods) is strictly prohibited.
+
+If you want to use any part of the code in your own mods you need written permission from the author (Andreas Renberg), who can be contacted via the GitHub account "IQAndreas".
+
+See LICENSE for full terms of use.
+

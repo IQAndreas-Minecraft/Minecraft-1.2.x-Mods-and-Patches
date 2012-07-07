@@ -8,8 +8,11 @@ else
     #Aliases for clarity
     projectName=$1 #relative
     
-    mcpDir="/media/MyBook/Games/Minecraft/Modding/mcp62"
-    curDir="/media/MyBook/Programming/GIT/Projects/Minecraft-Mods-and-Patches"
+    # NOTE: Make sure to create a link to the MCP directory in the current one
+    mcpDir="MCP"
+    
+    # Save the current directory so we can switch back to it later
+    curDir=`pwd`
     
     #if [ $2 == "-r" ]; then
     if [ $# -ge 2 ]; then #just check for ANYTHING in parameter 2 as a temporary fix
